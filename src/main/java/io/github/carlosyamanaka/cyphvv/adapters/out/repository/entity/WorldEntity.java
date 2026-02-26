@@ -22,6 +22,9 @@ public class WorldEntity {
     @Column(name = "deleted_at")
     private OffsetDateTime deletedAt;
 
+    @Column(name = "world_name")
+    private String worldName;
+
     public WorldEntity() {}
 
     public Long getId() { return id; }
@@ -38,4 +41,7 @@ public class WorldEntity {
 
     public OffsetDateTime getDeletedAt() { return deletedAt; }
     public void setDeletedAt(OffsetDateTime deletedAt) { this.deletedAt = deletedAt; }
+
+    public String getWorldName() {return worldName;}
+    public void setWorldName(String worldName) {this.worldName = worldName;}
 }

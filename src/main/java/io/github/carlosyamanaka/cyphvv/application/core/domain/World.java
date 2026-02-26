@@ -9,13 +9,15 @@ public class World {
     private OffsetDateTime createdAt;
     private Boolean deleted;
     private OffsetDateTime deletedAt;
+    private String worldName;
 
-    public World(Long id, String userId, OffsetDateTime createdAt, Boolean deleted, OffsetDateTime deletedAt) {
+    public World(Long id, String userId, OffsetDateTime createdAt, Boolean deleted, OffsetDateTime deletedAt, String worldName) {
         this.id = id;
         this.userId = userId;
         this.createdAt = createdAt;
         this.deleted = deleted;
         this.deletedAt = deletedAt;
+        this.worldName = worldName;
     }
 
     // Business Logic Method
@@ -30,4 +32,5 @@ public class World {
     public OffsetDateTime getCreatedAt() { return createdAt; }
     public Boolean getDeleted() { return deleted; }
     public OffsetDateTime getDeletedAt() { return deletedAt; }
+    public String getWorldName(){ return worldName; }
 }

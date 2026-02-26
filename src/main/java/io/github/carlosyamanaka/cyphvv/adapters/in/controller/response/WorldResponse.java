@@ -5,6 +5,7 @@ import java.time.OffsetDateTime;
 public record WorldResponse(
         Long id,
         String userId,
-        OffsetDateTime createdAt
+        OffsetDateTime createdAt,
+        String worldName
 ) {
 }

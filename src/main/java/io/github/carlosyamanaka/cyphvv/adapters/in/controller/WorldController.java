@@ -25,7 +25,7 @@ public class WorldController {
     @PostMapping
     public ResponseEntity<WorldResponse> createWorld(@RequestBody CreateWorldRequest request) {
         // create world
-        World createdWorld = createWorldUseCase.execute(request.userId());
+        World createdWorld = createWorldUseCase.execute(request.userId(), request.worldName());
 
         // map result to response
         WorldResponse response = mapper.toResponse(createdWorld);

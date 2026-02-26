@@ -11,7 +11,8 @@ public class WorldControllerMapper {
         return new WorldResponse(
                 world.getId(),
                 world.getUserId(),
-                world.getCreatedAt()
+                world.getCreatedAt(),
+                world.getWorldName()
         );
     }
 }

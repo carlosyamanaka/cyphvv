@@ -15,6 +15,7 @@ public class WorldRepositoryMapper {
         entity.setCreatedAt(world.getCreatedAt());
         entity.setDeleted(world.getDeleted());
         entity.setDeletedAt(world.getDeletedAt());
+        entity.setWorldName(world.getWorldName());
         return entity;
     }
 
@@ -25,7 +26,8 @@ public class WorldRepositoryMapper {
                 entity.getUserId(),
                 entity.getCreatedAt(),
                 entity.getDeleted(),
-                entity.getDeletedAt()
+                entity.getDeletedAt(),
+                entity.getWorldName()
         );
     }
 }
