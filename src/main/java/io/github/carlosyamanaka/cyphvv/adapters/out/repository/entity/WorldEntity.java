@@ -14,7 +14,7 @@ public class WorldEntity {
     @Column(name = "user_id")
     private String userId;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
 
     private Boolean deleted;
