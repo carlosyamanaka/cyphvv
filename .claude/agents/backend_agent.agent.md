@@ -3,7 +3,6 @@ description: Subagente especialista em Backend Java Spring para criar e modifica
 mode: subagent
 temperature: 0.2
 color: "#4f46e5"
-tools: [write, edit, bash]
 ---
 
 # Agente Backend Java - Cyphvv
