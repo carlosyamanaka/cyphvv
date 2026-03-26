@@ -1,0 +1,50 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Dev (H2 Database)",
+      "request": "launch",
+      "mainClass": "io.github.carlosyamanaka.cyphvv.CyphvvApplication",
+      "projectName": "cyphvv",
+      "env": {
+        "SPRING_PROFILES_ACTIVE": "dev"
+      },
+      "console": "internalConsole"
+    },
+    {
+      "type": "java",
+      "name": "Staging (Supabase)",
+      "request": "launch",
+      "mainClass": "io.github.carlosyamanaka.cyphvv.CyphvvApplication",
+      "projectName": "cyphvv",
+      "env": {
+        "SPRING_PROFILES_ACTIVE": "staging",
+        "STAGING_DB_URL": "your-staging-url",
+        "STAGING_DB_USER": "your-staging-user",
+        "STAGING_DB_PASSWORD": "your-staging-password"
+      },
+      "console": "internalConsole"
+    },
+    {
+      "type": "java",
+      "name": "Prod (Supabase)",
+      "request": "launch",
+      "mainClass": "io.github.carlosyamanaka.cyphvv.CyphvvApplication",
+      "projectName": "cyphvv",
+      "env": {
+        "SPRING_PROFILES_ACTIVE": "prod",
+        "PROD_DB_URL": "your-prod-url",
+        "PROD_DB_USER": "your-prod-user",
+        "PROD_DB_PASSWORD": "your-prod-password"
+      },
+      "console": "internalConsole"
+    },
+    {
+      "type": "java",
+      "name": "Debug Current File",
+      "request": "launch",
+      "mainClass": "${file}"
+    }
+  ]
+}

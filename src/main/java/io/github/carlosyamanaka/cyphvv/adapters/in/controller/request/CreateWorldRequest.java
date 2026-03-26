@@ -1,4 +1,4 @@
 package io.github.carlosyamanaka.cyphvv.adapters.in.controller.request;
 
-public record CreateWorldRequest(String userId, String worldName) {
+public record CreateWorldRequest(String worldName) {
 }

@@ -30,4 +30,14 @@ build/
 !**/src/test/**/build/
 
 ### VS Code ###
-.vscode/
+.vscode/launch.json
+
+### Environment Variables ###
+.env
+.env.local
+.env.*.local
+
+### Firebase Credentials ###
+**/firebase-service-account.json
+**/*firebase*.json
+**/*adminsdk*.json
