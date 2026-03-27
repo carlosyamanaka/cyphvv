@@ -9,5 +9,4 @@ public class CyphvvApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CyphvvApplication.class, args);
 	}
-
 }

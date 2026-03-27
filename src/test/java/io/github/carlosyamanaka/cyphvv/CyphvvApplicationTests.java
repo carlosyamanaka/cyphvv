@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 @Import(TestSecurityConfig.class)
 class CyphvvApplicationTests {
 

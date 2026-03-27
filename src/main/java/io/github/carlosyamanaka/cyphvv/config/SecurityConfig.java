@@ -30,16 +30,13 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/h2-console/**",
                                 "/actuator/**",
                                 "/error"
                         ).permitAll()
 
                         .anyRequest().authenticated())
 
-                .addFilterBefore(firebaseAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-
-                .headers(headers -> headers.frameOptions(frame -> frame.disable()));
+                .addFilterBefore(firebaseAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -3,17 +3,6 @@
   "configurations": [
     {
       "type": "java",
-      "name": "Dev (H2 Database)",
-      "request": "launch",
-      "mainClass": "io.github.carlosyamanaka.cyphvv.CyphvvApplication",
-      "projectName": "cyphvv",
-      "env": {
-        "SPRING_PROFILES_ACTIVE": "dev"
-      },
-      "console": "internalConsole"
-    },
-    {
-      "type": "java",
       "name": "Staging (Supabase)",
       "request": "launch",
       "mainClass": "io.github.carlosyamanaka.cyphvv.CyphvvApplication",
