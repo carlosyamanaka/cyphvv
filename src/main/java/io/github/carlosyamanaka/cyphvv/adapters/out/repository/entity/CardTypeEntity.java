@@ -1,13 +1,12 @@
 package io.github.carlosyamanaka.cyphvv.adapters.out.repository.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
+
 import java.time.OffsetDateTime;
 
 @Entity
-@Table(name = "card")
-public class CardEntity {
+@Table(name = "card_type")
+public class CardTypeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,15 +15,8 @@ public class CardEntity {
     @Column(name = "world_id", nullable = false)
     private Long worldId;
 
-    @Column(name = "card_type_id", nullable = false)
-    private Long cardTypeId;
-
-    @Column(name = "img_url")
-    private String imageUrl;
-
-    @JdbcTypeCode(SqlTypes.ARRAY)
-    @Column(name = "aliases")
-    private String[] aliases;
+    @Column(name = "card_type_name")
+    private String cardTypeName;
 
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
@@ -34,7 +26,7 @@ public class CardEntity {
     @Column(name = "deleted_at")
     private OffsetDateTime deletedAt;
 
-    public CardEntity() {
+    public CardTypeEntity() {
     }
 
     public Long getId() {
@@ -53,28 +45,12 @@ public class CardEntity {
         this.worldId = worldId;
     }
 
-    public Long getCardTypeId() {
-        return cardTypeId;
+    public String getCardTypeName() {
+        return cardTypeName;
     }
 
-    public void setCardTypeId(Long cardTypeId) {
-        this.cardTypeId = cardTypeId;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public String[] getAliases() {
-        return aliases;
-    }
-
-    public void setAliases(String[] aliases) {
-        this.aliases = aliases;
+    public void setCardTypeName(String cardTypeName) {
+        this.cardTypeName = cardTypeName;
     }
 
     public OffsetDateTime getCreatedAt() {

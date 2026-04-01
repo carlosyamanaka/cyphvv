@@ -19,6 +19,11 @@ public class CardRepositoryAdapter implements CardRepositoryPort {
     }
 
     @Override
+    public Card save(Card card) {
+        return mapper.toDomain(cardJpaRepository.save(mapper.toEntity(card)));
+    }
+
+    @Override
     public List<Card> findByWorldId(Long worldId) {
         return cardJpaRepository.findByWorldIdAndNotDeleted(worldId)
                 .stream()

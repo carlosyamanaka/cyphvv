@@ -4,6 +4,9 @@ import io.github.carlosyamanaka.cyphvv.adapters.out.repository.entity.CardEntity
 import io.github.carlosyamanaka.cyphvv.application.core.domain.Card;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 @Component
 public class CardRepositoryMapper {
 
@@ -13,7 +16,7 @@ public class CardRepositoryMapper {
         entity.setWorldId(card.getWorldId());
         entity.setCardTypeId(card.getCardTypeId());
         entity.setImageUrl(card.getImageUrl());
-        entity.setAliases(card.getAliases());
+        entity.setAliases(card.getAliases() == null ? null : card.getAliases().toArray(String[]::new));
         entity.setCreatedAt(card.getCreatedAt());
         entity.setDeleted(card.getDeleted());
         entity.setDeletedAt(card.getDeletedAt());
@@ -26,7 +29,7 @@ public class CardRepositoryMapper {
                 entity.getWorldId(),
                 entity.getCardTypeId(),
                 entity.getImageUrl(),
-                entity.getAliases(),
+                entity.getAliases() == null ? Collections.emptyList() : Arrays.asList(entity.getAliases()),
                 entity.getCreatedAt(),
                 entity.getDeleted(),
                 entity.getDeletedAt());
