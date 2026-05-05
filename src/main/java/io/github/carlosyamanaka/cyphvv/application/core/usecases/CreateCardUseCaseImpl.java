@@ -16,7 +16,7 @@ public class CreateCardUseCaseImpl implements CreateCardUseCase {
     }
 
     @Override
-    public Card execute(Long worldId, Long cardTypeId, String imageUrl) {
+    public Card execute(Long worldId, Long cardTypeId, String cardName, String description, String imageUrl) {
         if (worldId == null || worldId <= 0) {
             throw new IllegalArgumentException("World ID must be valid");
         }
@@ -25,10 +25,14 @@ public class CreateCardUseCaseImpl implements CreateCardUseCase {
             throw new IllegalArgumentException("Card type ID must be valid");
         }
 
+        String normalizedCardName = (cardName == null || cardName.isBlank()) ? "Sem nome" : cardName;
+
         Card newCard = new Card(
                 null,
                 worldId,
                 cardTypeId,
+                normalizedCardName,
+                description,
                 imageUrl,
                 List.of(),
                 OffsetDateTime.now(),

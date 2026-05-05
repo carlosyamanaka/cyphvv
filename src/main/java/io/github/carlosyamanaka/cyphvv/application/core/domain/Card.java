@@ -7,6 +7,8 @@ public class Card {
     private Long id;
     private Long worldId;
     private Long cardTypeId;
+    private String cardName;
+    private String description;
     private String imageUrl;
     private List<String> aliases;
     private OffsetDateTime createdAt;
@@ -14,10 +16,18 @@ public class Card {
     private OffsetDateTime deletedAt;
 
     public Card(Long id, Long worldId, Long cardTypeId, String imageUrl, List<String> aliases,
-                OffsetDateTime createdAt, Boolean deleted, OffsetDateTime deletedAt) {
+            OffsetDateTime createdAt, Boolean deleted, OffsetDateTime deletedAt) {
+        this(id, worldId, cardTypeId, null, null, imageUrl, aliases, createdAt, deleted, deletedAt);
+    }
+
+    public Card(Long id, Long worldId, Long cardTypeId, String cardName, String description, String imageUrl,
+            List<String> aliases,
+            OffsetDateTime createdAt, Boolean deleted, OffsetDateTime deletedAt) {
         this.id = id;
         this.worldId = worldId;
         this.cardTypeId = cardTypeId;
+        this.cardName = cardName;
+        this.description = description;
         this.imageUrl = imageUrl;
         this.aliases = aliases;
         this.createdAt = createdAt;
@@ -31,12 +41,43 @@ public class Card {
     }
 
     // Getters
-    public Long getId() { return id; }
-    public Long getWorldId() { return worldId; }
-    public Long getCardTypeId() { return cardTypeId; }
-    public String getImageUrl() { return imageUrl; }
-    public List<String> getAliases() { return aliases; }
-    public OffsetDateTime getCreatedAt() { return createdAt; }
-    public Boolean getDeleted() { return deleted; }
-    public OffsetDateTime getDeletedAt() { return deletedAt; }
+    public Long getId() {
+        return id;
+    }
+
+    public Long getWorldId() {
+        return worldId;
+    }
+
+    public Long getCardTypeId() {
+        return cardTypeId;
+    }
+
+    public String getCardName() {
+        return cardName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public List<String> getAliases() {
+        return aliases;
+    }
+
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public OffsetDateTime getDeletedAt() {
+        return deletedAt;
+    }
 }

@@ -15,6 +15,8 @@ public class CardRepositoryMapper {
         entity.setId(card.getId());
         entity.setWorldId(card.getWorldId());
         entity.setCardTypeId(card.getCardTypeId());
+        entity.setCardName(card.getCardName());
+        entity.setDescription(card.getDescription());
         entity.setImageUrl(card.getImageUrl());
         entity.setAliases(card.getAliases() == null ? null : card.getAliases().toArray(String[]::new));
         entity.setCreatedAt(card.getCreatedAt());
@@ -28,6 +30,8 @@ public class CardRepositoryMapper {
                 entity.getId(),
                 entity.getWorldId(),
                 entity.getCardTypeId(),
+                entity.getCardName(),
+                entity.getDescription(),
                 entity.getImageUrl(),
                 entity.getAliases() == null ? Collections.emptyList() : Arrays.asList(entity.getAliases()),
                 entity.getCreatedAt(),

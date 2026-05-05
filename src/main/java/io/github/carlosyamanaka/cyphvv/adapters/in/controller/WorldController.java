@@ -123,7 +123,12 @@ public class WorldController {
             @PathVariable Long worldId,
             @RequestBody CreateCardRequest request) {
 
-        Card createdCard = createCardUseCase.execute(worldId, request.cardTypeId(), request.imageUrl());
+        Card createdCard = createCardUseCase.execute(
+                worldId,
+                request.cardTypeId(),
+                request.cardName(),
+                request.description(),
+                request.imageUrl());
         CardResponse response = cardMapper.toResponse(createdCard);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
