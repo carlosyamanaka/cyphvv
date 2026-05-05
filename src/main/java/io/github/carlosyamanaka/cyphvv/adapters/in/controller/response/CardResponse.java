@@ -4,10 +4,12 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 public record CardResponse(
-        Long id,
-        Long worldId,
-        Long cardTypeId,
-        String imageUrl,
-        List<String> aliases,
-        OffsetDateTime createdAt) {
+                Long id,
+                Long worldId,
+                Long cardTypeId,
+                String cardName,
+                String description,
+                String imageUrl,
+                List<String> aliases,
+                OffsetDateTime createdAt) {
 }

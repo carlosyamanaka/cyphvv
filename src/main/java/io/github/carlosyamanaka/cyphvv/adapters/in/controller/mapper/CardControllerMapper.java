@@ -12,9 +12,10 @@ public class CardControllerMapper {
                 card.getId(),
                 card.getWorldId(),
                 card.getCardTypeId(),
+                card.getCardName(),
+                card.getDescription(),
                 card.getImageUrl(),
                 card.getAliases(),
-                card.getCreatedAt()
-        );
+                card.getCreatedAt());
     }
 }

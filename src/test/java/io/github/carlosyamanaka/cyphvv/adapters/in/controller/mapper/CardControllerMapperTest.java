@@ -32,7 +32,7 @@ class CardControllerMapperTest {
         String imageUrl = "http://example.com/card.jpg";
         List<String> aliases = List.of("Alias 1", "Alias 2");
         OffsetDateTime createdAt = OffsetDateTime.now();
-        Card card = new Card(id, worldId, cardTypeId, imageUrl, aliases, createdAt, false, null);
+        Card card = new Card(id, worldId, cardTypeId, "Nome", "Descricao", imageUrl, aliases, createdAt, false, null);
 
         // Act
         CardResponse response = mapper.toResponse(card);
@@ -44,6 +44,8 @@ class CardControllerMapperTest {
         assertEquals(cardTypeId, response.cardTypeId());
         assertEquals(imageUrl, response.imageUrl());
         assertEquals(aliases, response.aliases());
+        assertEquals("Nome", response.cardName());
+        assertEquals("Descricao", response.description());
         assertEquals(createdAt, response.createdAt());
     }
 
@@ -51,7 +53,8 @@ class CardControllerMapperTest {
     @DisplayName("Should map Card with null imageUrl")
     void testToResponse_NullImageUrl() {
         // Arrange
-        Card card = new Card(1L, 1L, 1L, null, new ArrayList<>(), OffsetDateTime.now(), false, null);
+        Card card = new Card(1L, 1L, 1L, "Nome", "Descricao", null, new ArrayList<>(), OffsetDateTime.now(), false,
+                null);
 
         // Act
         CardResponse response = mapper.toResponse(card);
@@ -65,7 +68,8 @@ class CardControllerMapperTest {
     @DisplayName("Should map Card with empty aliases list")
     void testToResponse_EmptyAliases() {
         // Arrange
-        Card card = new Card(1L, 1L, 1L, "http://example.com/card.jpg", new ArrayList<>(), OffsetDateTime.now(), false,
+        Card card = new Card(1L, 1L, 1L, "Nome", "Descricao", "http://example.com/card.jpg", new ArrayList<>(),
+                OffsetDateTime.now(), false,
                 null);
 
         // Act
@@ -81,7 +85,8 @@ class CardControllerMapperTest {
     void testToResponse_MultipleAliases() {
         // Arrange
         List<String> aliases = List.of("Alias 1", "Alias 2", "Alias 3", "Alias 4");
-        Card card = new Card(1L, 1L, 1L, "http://example.com/card.jpg", aliases, OffsetDateTime.now(), false, null);
+        Card card = new Card(1L, 1L, 1L, "Nome", "Descricao", "http://example.com/card.jpg", aliases,
+                OffsetDateTime.now(), false, null);
 
         // Act
         CardResponse response = mapper.toResponse(card);
@@ -95,7 +100,8 @@ class CardControllerMapperTest {
     @DisplayName("Should return CardResponse record (immutable)")
     void testToResponse_ReturnsRecord() {
         // Arrange
-        Card card = new Card(1L, 1L, 1L, "http://example.com/card.jpg", new ArrayList<>(), OffsetDateTime.now(), false,
+        Card card = new Card(1L, 1L, 1L, "Nome", "Descricao", "http://example.com/card.jpg", new ArrayList<>(),
+                OffsetDateTime.now(), false,
                 null);
 
         // Act
@@ -152,7 +158,8 @@ class CardControllerMapperTest {
     @DisplayName("Should map Card with large IDs")
     void testToResponse_LargeIds() {
         // Arrange
-        Card card = new Card(Long.MAX_VALUE, Long.MAX_VALUE, Long.MAX_VALUE, "http://example.com/card.jpg",
+        Card card = new Card(Long.MAX_VALUE, Long.MAX_VALUE, Long.MAX_VALUE, "Nome", "Descricao",
+                "http://example.com/card.jpg",
                 new ArrayList<>(), OffsetDateTime.now(), false, null);
 
         // Act
@@ -168,9 +175,11 @@ class CardControllerMapperTest {
     @DisplayName("Should handle multiple consecutive mappings")
     void testToResponse_MultipleCalls() {
         // Arrange
-        Card card1 = new Card(1L, 1L, 1L, "http://example.com/card1.jpg", new ArrayList<>(), OffsetDateTime.now(),
+        Card card1 = new Card(1L, 1L, 1L, "Nome", "Descricao", "http://example.com/card1.jpg", new ArrayList<>(),
+                OffsetDateTime.now(),
                 false, null);
-        Card card2 = new Card(2L, 2L, 2L, "http://example.com/card2.jpg", List.of("Alias"), OffsetDateTime.now(), false,
+        Card card2 = new Card(2L, 2L, 2L, "Nome2", "Descricao2", "http://example.com/card2.jpg", List.of("Alias"),
+                OffsetDateTime.now(), false,
                 null);
 
         // Act
