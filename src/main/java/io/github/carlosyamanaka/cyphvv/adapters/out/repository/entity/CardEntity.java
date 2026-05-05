@@ -19,6 +19,12 @@ public class CardEntity {
     @Column(name = "card_type_id", nullable = false)
     private Long cardTypeId;
 
+    @Column(name = "card_name", nullable = false)
+    private String cardName;
+
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "img_url")
     private String imageUrl;
 
@@ -59,6 +65,22 @@ public class CardEntity {
 
     public void setCardTypeId(Long cardTypeId) {
         this.cardTypeId = cardTypeId;
+    }
+
+    public String getCardName() {
+        return cardName;
+    }
+
+    public void setCardName(String cardName) {
+        this.cardName = cardName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getImageUrl() {
