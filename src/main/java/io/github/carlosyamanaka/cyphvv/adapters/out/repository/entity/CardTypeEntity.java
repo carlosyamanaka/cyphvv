@@ -18,6 +18,9 @@ public class CardTypeEntity {
     @Column(name = "card_type_name")
     private String cardTypeName;
 
+    @Column(name = "icon_type")
+    private String iconType;
+
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
 
@@ -59,6 +62,14 @@ public class CardTypeEntity {
 
     public void setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getIconType() {
+        return iconType;
+    }
+
+    public void setIconType(String iconType) {
+        this.iconType = iconType;
     }
 
     public Boolean getDeleted() {

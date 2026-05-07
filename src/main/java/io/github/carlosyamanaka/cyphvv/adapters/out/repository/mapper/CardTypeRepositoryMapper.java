@@ -12,6 +12,7 @@ public class CardTypeRepositoryMapper {
         entity.setId(cardType.getId());
         entity.setWorldId(cardType.getWorldId());
         entity.setCardTypeName(cardType.getCardTypeName());
+        entity.setIconType(cardType.getIconType());
         entity.setCreatedAt(cardType.getCreatedAt());
         entity.setDeleted(cardType.getDeleted());
         entity.setDeletedAt(cardType.getDeletedAt());
@@ -23,6 +24,7 @@ public class CardTypeRepositoryMapper {
                 entity.getId(),
                 entity.getWorldId(),
                 entity.getCardTypeName(),
+                entity.getIconType(),
                 entity.getCreatedAt(),
                 entity.getDeleted(),
                 entity.getDeletedAt());

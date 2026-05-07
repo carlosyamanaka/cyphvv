@@ -165,7 +165,7 @@ public class WorldController {
             @PathVariable Long worldId,
             @RequestBody CreateCardTypeRequest request) {
 
-        CardType cardType = createCardTypeUseCase.execute(worldId, request.cardTypeName());
+        CardType cardType = createCardTypeUseCase.execute(worldId, request.cardTypeName(), request.iconType());
         CardTypeResponse response = cardTypeMapper.toResponse(cardType);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -178,7 +178,7 @@ public class WorldController {
             @PathVariable Long cardTypeId,
             @RequestBody UpdateCardTypeRequest request) {
 
-        CardType updatedCardType = updateCardTypeUseCase.execute(worldId, cardTypeId, request.cardTypeName());
+        CardType updatedCardType = updateCardTypeUseCase.execute(worldId, cardTypeId, request.cardTypeName(), request.iconType());
         CardTypeResponse response = cardTypeMapper.toResponse(updatedCardType);
 
         return ResponseEntity.ok(response);

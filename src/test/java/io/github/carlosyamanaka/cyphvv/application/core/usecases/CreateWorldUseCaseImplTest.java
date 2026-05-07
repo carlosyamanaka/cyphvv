@@ -1,7 +1,9 @@
 package io.github.carlosyamanaka.cyphvv.application.core.usecases;
 
+import io.github.carlosyamanaka.cyphvv.application.core.domain.CardType;
 import io.github.carlosyamanaka.cyphvv.application.core.domain.World;
 import io.github.carlosyamanaka.cyphvv.application.ports.in.CreateWorldUseCase;
+import io.github.carlosyamanaka.cyphvv.application.ports.out.CardTypeRepositoryPort;
 import io.github.carlosyamanaka.cyphvv.application.ports.out.WorldRepositoryPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,11 +25,14 @@ class CreateWorldUseCaseImplTest {
     @Mock
     private WorldRepositoryPort worldRepositoryPort;
 
+    @Mock
+    private CardTypeRepositoryPort cardTypeRepositoryPort;
+
     private CreateWorldUseCase createWorldUseCase;
 
     @BeforeEach
     void setUp() {
-        createWorldUseCase = new CreateWorldUseCaseImpl(worldRepositoryPort);
+        createWorldUseCase = new CreateWorldUseCaseImpl(worldRepositoryPort, cardTypeRepositoryPort);
     }
 
     @Test
@@ -51,6 +56,7 @@ class CreateWorldUseCaseImplTest {
         assertFalse(result.getDeleted());
         assertNull(result.getDeletedAt());
         verify(worldRepositoryPort, times(1)).save(any(World.class));
+        verify(cardTypeRepositoryPort, times(13)).save(any(CardType.class));
     }
 
     @Test
@@ -115,6 +121,7 @@ class CreateWorldUseCaseImplTest {
         assertNotNull(result);
         assertEquals(1L, result.getId());
         verify(worldRepositoryPort, times(1)).save(any(World.class));
+        verify(cardTypeRepositoryPort, times(13)).save(any(CardType.class));
     }
 
     @Test
@@ -150,5 +157,6 @@ class CreateWorldUseCaseImplTest {
 
         // Assert
         verify(worldRepositoryPort, times(1)).save(any(World.class));
+        verify(cardTypeRepositoryPort, times(13)).save(any(CardType.class));
     }
 }

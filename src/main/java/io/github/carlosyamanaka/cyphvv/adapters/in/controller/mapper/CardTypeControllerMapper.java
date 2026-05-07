@@ -12,6 +12,7 @@ public class CardTypeControllerMapper {
                 cardType.getId(),
                 cardType.getWorldId(),
                 cardType.getCardTypeName(),
+                cardType.getIconType(),
                 cardType.getCreatedAt());
     }
 }

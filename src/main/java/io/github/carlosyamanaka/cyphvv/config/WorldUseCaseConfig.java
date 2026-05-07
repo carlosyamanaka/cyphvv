@@ -28,10 +28,10 @@ import org.springframework.context.annotation.Configuration;
 public class WorldUseCaseConfig {
 
     @Bean
-    public CreateWorldUseCase createWorldUseCase(WorldRepositoryPort worldRepositoryPort) {
-        // telling spring to inject the WorldRepositoryPort implementation when creating
+    public CreateWorldUseCase createWorldUseCase(WorldRepositoryPort worldRepositoryPort, CardTypeRepositoryPort cardTypeRepositoryPort) {
+        // telling spring to inject the WorldRepositoryPort and CardTypeRepositoryPort implementations when creating
         // the CreateWorldUseCase bean
-        return new CreateWorldUseCaseImpl(worldRepositoryPort);
+        return new CreateWorldUseCaseImpl(worldRepositoryPort, cardTypeRepositoryPort);
     }
 
     @Bean

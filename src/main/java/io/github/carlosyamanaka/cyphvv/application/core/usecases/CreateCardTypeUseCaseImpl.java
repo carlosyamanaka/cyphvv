@@ -15,7 +15,7 @@ public class CreateCardTypeUseCaseImpl implements CreateCardTypeUseCase {
     }
 
     @Override
-    public CardType execute(Long worldId, String cardTypeName) {
+    public CardType execute(Long worldId, String cardTypeName, String iconType) {
         if (worldId == null || worldId <= 0) {
             throw new IllegalArgumentException("World ID must be valid");
         }
@@ -28,6 +28,7 @@ public class CreateCardTypeUseCaseImpl implements CreateCardTypeUseCase {
                 null,
                 worldId,
                 cardTypeName.trim(),
+                iconType,
                 OffsetDateTime.now(),
                 false,
                 null);

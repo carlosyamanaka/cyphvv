@@ -13,7 +13,7 @@ public class UpdateCardTypeUseCaseImpl implements UpdateCardTypeUseCase {
     }
 
     @Override
-    public CardType execute(Long worldId, Long cardTypeId, String cardTypeName) {
+    public CardType execute(Long worldId, Long cardTypeId, String cardTypeName, String iconType) {
         if (worldId == null || worldId <= 0) {
             throw new IllegalArgumentException("World ID must be valid");
         }
@@ -31,7 +31,7 @@ public class UpdateCardTypeUseCaseImpl implements UpdateCardTypeUseCase {
             throw new IllegalArgumentException("Card type not found");
         }
 
-        existingCardType.updateName(cardTypeName.trim());
+        existingCardType.update(cardTypeName.trim(), iconType);
         return cardTypeRepositoryPort.save(existingCardType);
     }
 }

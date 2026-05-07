@@ -6,5 +6,6 @@ public record CardTypeResponse(
                 Long id,
                 Long worldId,
                 String cardTypeName,
+                String iconType,
                 OffsetDateTime createdAt) {
 }

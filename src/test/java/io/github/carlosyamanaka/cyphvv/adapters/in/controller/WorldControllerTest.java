@@ -233,16 +233,16 @@ class WorldControllerTest {
         void testListCardTypesByWorld_Success() {
                 // Arrange
                 Long worldId = 1L;
-                CardType cardType1 = new CardType(1L, worldId, "Type 1", OffsetDateTime.now(), false, null);
-                CardType cardType2 = new CardType(2L, worldId, "Type 2", OffsetDateTime.now(), false, null);
+                CardType cardType1 = new CardType(1L, worldId, "Type 1", "icon1", OffsetDateTime.now(), false, null);
+                CardType cardType2 = new CardType(2L, worldId, "Type 2", "icon2", OffsetDateTime.now(), false, null);
                 List<CardType> cardTypes = List.of(cardType1, cardType2);
 
                 when(listCardTypesByWorldUseCase.execute(worldId)).thenReturn(cardTypes);
 
                 io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardTypeResponse cardTypeResponse1 = new io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardTypeResponse(
-                                1L, worldId, "Type 1", OffsetDateTime.now());
+                                1L, worldId, "Type 1", "icon1", OffsetDateTime.now());
                 io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardTypeResponse cardTypeResponse2 = new io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardTypeResponse(
-                                2L, worldId, "Type 2", OffsetDateTime.now());
+                                2L, worldId, "Type 2", "icon2", OffsetDateTime.now());
 
                 when(cardTypeMapper.toResponse(cardType1)).thenReturn(cardTypeResponse1);
                 when(cardTypeMapper.toResponse(cardType2)).thenReturn(cardTypeResponse2);
@@ -264,12 +264,12 @@ class WorldControllerTest {
                 // Arrange
                 Long worldId = 1L;
                 Long cardTypeId = 1L;
-                CardType cardType = new CardType(cardTypeId, worldId, "Type 1", OffsetDateTime.now(), false, null);
+                CardType cardType = new CardType(cardTypeId, worldId, "Type 1", "icon1", OffsetDateTime.now(), false, null);
 
                 when(getCardTypeByIdUseCase.execute(worldId, cardTypeId)).thenReturn(cardType);
 
                 io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardTypeResponse response = new io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardTypeResponse(
-                                cardTypeId, worldId, "Type 1", OffsetDateTime.now());
+                                cardTypeId, worldId, "Type 1", "icon1", OffsetDateTime.now());
                 when(cardTypeMapper.toResponse(cardType)).thenReturn(response);
 
                 // Act
@@ -288,13 +288,14 @@ class WorldControllerTest {
                 // Arrange
                 Long worldId = 1L;
                 String cardTypeName = "New Type";
-                CreateCardTypeRequest request = new CreateCardTypeRequest(cardTypeName);
+                String iconType = "iconType";
+                CreateCardTypeRequest request = new CreateCardTypeRequest(cardTypeName, iconType);
 
-                CardType createdCardType = new CardType(1L, worldId, cardTypeName, OffsetDateTime.now(), false, null);
-                when(createCardTypeUseCase.execute(worldId, cardTypeName)).thenReturn(createdCardType);
+                CardType createdCardType = new CardType(1L, worldId, cardTypeName, iconType, OffsetDateTime.now(), false, null);
+                when(createCardTypeUseCase.execute(worldId, cardTypeName, iconType)).thenReturn(createdCardType);
 
                 io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardTypeResponse response = new io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardTypeResponse(
-                                1L, worldId, cardTypeName, OffsetDateTime.now());
+                                1L, worldId, cardTypeName, iconType, OffsetDateTime.now());
                 when(cardTypeMapper.toResponse(createdCardType)).thenReturn(response);
 
                 // Act
@@ -314,15 +315,16 @@ class WorldControllerTest {
                 Long worldId = 1L;
                 Long cardTypeId = 1L;
                 String newCardTypeName = "Updated Type";
-                UpdateCardTypeRequest request = new UpdateCardTypeRequest(newCardTypeName);
+                String newIconType = "updatedIcon";
+                UpdateCardTypeRequest request = new UpdateCardTypeRequest(newCardTypeName, newIconType);
 
-                CardType updatedCardType = new CardType(cardTypeId, worldId, newCardTypeName, OffsetDateTime.now(),
+                CardType updatedCardType = new CardType(cardTypeId, worldId, newCardTypeName, newIconType, OffsetDateTime.now(),
                                 false,
                                 null);
-                when(updateCardTypeUseCase.execute(worldId, cardTypeId, newCardTypeName)).thenReturn(updatedCardType);
+                when(updateCardTypeUseCase.execute(worldId, cardTypeId, newCardTypeName, newIconType)).thenReturn(updatedCardType);
 
                 io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardTypeResponse response = new io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardTypeResponse(
-                                cardTypeId, worldId, newCardTypeName, OffsetDateTime.now());
+                                cardTypeId, worldId, newCardTypeName, newIconType, OffsetDateTime.now());
                 when(cardTypeMapper.toResponse(updatedCardType)).thenReturn(response);
 
                 // Act
