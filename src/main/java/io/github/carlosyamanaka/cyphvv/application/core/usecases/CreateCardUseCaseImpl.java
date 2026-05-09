@@ -5,7 +5,7 @@ import io.github.carlosyamanaka.cyphvv.application.ports.in.CreateCardUseCase;
 import io.github.carlosyamanaka.cyphvv.application.ports.out.CardRepositoryPort;
 
 import java.time.OffsetDateTime;
-import java.util.List;
+import java.util.Collections;
 
 public class CreateCardUseCaseImpl implements CreateCardUseCase {
 
@@ -16,7 +16,7 @@ public class CreateCardUseCaseImpl implements CreateCardUseCase {
     }
 
     @Override
-    public Card execute(Long worldId, Long cardTypeId, String cardName, String description, String imageUrl) {
+    public Card execute(Long worldId, Long cardTypeId, String cardName, String imageUrl) {
         if (worldId == null || worldId <= 0) {
             throw new IllegalArgumentException("World ID must be valid");
         }
@@ -32,9 +32,9 @@ public class CreateCardUseCaseImpl implements CreateCardUseCase {
                 worldId,
                 cardTypeId,
                 normalizedCardName,
-                description,
                 imageUrl,
-                List.of(),
+                Collections.emptyList(),
+                Collections.emptyList(),
                 OffsetDateTime.now(),
                 false,
                 null);

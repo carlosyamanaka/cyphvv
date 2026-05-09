@@ -2,10 +2,12 @@ package io.github.carlosyamanaka.cyphvv.adapters.out.repository.mapper;
 
 import io.github.carlosyamanaka.cyphvv.adapters.out.repository.entity.CardEntity;
 import io.github.carlosyamanaka.cyphvv.application.core.domain.Card;
+import io.github.carlosyamanaka.cyphvv.application.core.domain.CardSection;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @Component
 public class CardRepositoryMapper {
@@ -16,7 +18,6 @@ public class CardRepositoryMapper {
         entity.setWorldId(card.getWorldId());
         entity.setCardTypeId(card.getCardTypeId());
         entity.setCardName(card.getCardName());
-        entity.setDescription(card.getDescription());
         entity.setImageUrl(card.getImageUrl());
         entity.setAliases(card.getAliases() == null ? null : card.getAliases().toArray(String[]::new));
         entity.setCreatedAt(card.getCreatedAt());
@@ -26,14 +27,18 @@ public class CardRepositoryMapper {
     }
 
     public Card toDomain(CardEntity entity) {
+        return toDomainWithSections(entity, Collections.emptyList());
+    }
+
+    public Card toDomainWithSections(CardEntity entity, List<CardSection> sections) {
         return new Card(
                 entity.getId(),
                 entity.getWorldId(),
                 entity.getCardTypeId(),
                 entity.getCardName(),
-                entity.getDescription(),
                 entity.getImageUrl(),
-                entity.getAliases() == null ? Collections.emptyList() : Arrays.asList(entity.getAliases()),
+                entity.getAliases() == null ? new java.util.ArrayList<>() : new java.util.ArrayList<>(Arrays.asList(entity.getAliases())),
+                sections,
                 entity.getCreatedAt(),
                 entity.getDeleted(),
                 entity.getDeletedAt());

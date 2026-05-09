@@ -9,6 +9,10 @@ import io.github.carlosyamanaka.cyphvv.application.core.usecases.UpdateCardTypeU
 import io.github.carlosyamanaka.cyphvv.application.core.usecases.DeleteCardTypeUseCaseImpl;
 import io.github.carlosyamanaka.cyphvv.application.core.usecases.ListWorldsUseCaseImpl;
 import io.github.carlosyamanaka.cyphvv.application.core.usecases.ListCardsByWorldUseCaseImpl;
+import io.github.carlosyamanaka.cyphvv.application.core.usecases.AddCardAliasUseCaseImpl;
+import io.github.carlosyamanaka.cyphvv.application.core.usecases.RemoveCardAliasUseCaseImpl;
+import io.github.carlosyamanaka.cyphvv.application.core.usecases.UpdateCardNameUseCaseImpl;
+import io.github.carlosyamanaka.cyphvv.application.core.usecases.SaveCardSectionsUseCaseImpl;
 import io.github.carlosyamanaka.cyphvv.application.ports.in.CreateWorldUseCase;
 import io.github.carlosyamanaka.cyphvv.application.ports.in.CreateCardUseCase;
 import io.github.carlosyamanaka.cyphvv.application.ports.in.CreateCardTypeUseCase;
@@ -18,6 +22,11 @@ import io.github.carlosyamanaka.cyphvv.application.ports.in.UpdateCardTypeUseCas
 import io.github.carlosyamanaka.cyphvv.application.ports.in.DeleteCardTypeUseCase;
 import io.github.carlosyamanaka.cyphvv.application.ports.in.ListWorldsUseCase;
 import io.github.carlosyamanaka.cyphvv.application.ports.in.ListCardsByWorldUseCase;
+import io.github.carlosyamanaka.cyphvv.application.ports.in.AddCardAliasUseCase;
+import io.github.carlosyamanaka.cyphvv.application.ports.in.RemoveCardAliasUseCase;
+import io.github.carlosyamanaka.cyphvv.application.ports.in.UpdateCardNameUseCase;
+import io.github.carlosyamanaka.cyphvv.application.ports.in.SaveCardSectionsUseCase;
+import io.github.carlosyamanaka.cyphvv.application.ports.out.CardSectionRepositoryPort;
 import io.github.carlosyamanaka.cyphvv.application.ports.out.CardTypeRepositoryPort;
 import io.github.carlosyamanaka.cyphvv.application.ports.out.WorldRepositoryPort;
 import io.github.carlosyamanaka.cyphvv.application.ports.out.CardRepositoryPort;
@@ -72,5 +81,26 @@ public class WorldUseCaseConfig {
     @Bean
     public ListCardsByWorldUseCase listCardsByWorldUseCase(CardRepositoryPort cardRepositoryPort) {
         return new ListCardsByWorldUseCaseImpl(cardRepositoryPort);
+    }
+
+    @Bean
+    public AddCardAliasUseCase addCardAliasUseCase(CardRepositoryPort cardRepositoryPort) {
+        return new AddCardAliasUseCaseImpl(cardRepositoryPort);
+    }
+
+    @Bean
+    public RemoveCardAliasUseCase removeCardAliasUseCase(CardRepositoryPort cardRepositoryPort) {
+        return new RemoveCardAliasUseCaseImpl(cardRepositoryPort);
+    }
+
+    @Bean
+    public UpdateCardNameUseCase updateCardNameUseCase(CardRepositoryPort cardRepositoryPort) {
+        return new UpdateCardNameUseCaseImpl(cardRepositoryPort);
+    }
+
+    @Bean
+    public SaveCardSectionsUseCase saveCardSectionsUseCase(CardRepositoryPort cardRepositoryPort,
+            CardSectionRepositoryPort cardSectionRepositoryPort) {
+        return new SaveCardSectionsUseCaseImpl(cardRepositoryPort, cardSectionRepositoryPort);
     }
 }

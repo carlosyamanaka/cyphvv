@@ -8,8 +8,8 @@ public record CardResponse(
                 Long worldId,
                 Long cardTypeId,
                 String cardName,
-                String description,
                 String imageUrl,
                 List<String> aliases,
+                List<CardSectionResponse> sections,
                 OffsetDateTime createdAt) {
 }

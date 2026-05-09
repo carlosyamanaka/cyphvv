@@ -1,6 +1,7 @@
 package io.github.carlosyamanaka.cyphvv.application.core.usecases;
 
 import io.github.carlosyamanaka.cyphvv.application.core.domain.Card;
+import io.github.carlosyamanaka.cyphvv.application.core.domain.CardSection;
 import io.github.carlosyamanaka.cyphvv.application.ports.in.CreateCardUseCase;
 import io.github.carlosyamanaka.cyphvv.application.ports.out.CardRepositoryPort;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,22 +32,24 @@ class CreateCardUseCaseImplTest {
         createCardUseCase = new CreateCardUseCaseImpl(cardRepositoryPort);
     }
 
+    private Card buildSavedCard(Long id, Long worldId, Long cardTypeId, String imageUrl) {
+        return new Card(id, worldId, cardTypeId, "Sem nome", imageUrl,
+                Collections.<String>emptyList(), Collections.<CardSection>emptyList(),
+                OffsetDateTime.now(), false, null);
+    }
+
     @Test
     @DisplayName("Should create a card successfully with valid parameters")
     void testExecute_Success() {
-        // Arrange
         Long worldId = 1L;
         Long cardTypeId = 1L;
         String imageUrl = "http://example.com/card.jpg";
 
-        Card savedCard = new Card(1L, worldId, cardTypeId, imageUrl, new ArrayList<>(), OffsetDateTime.now(), false,
-                null);
+        Card savedCard = buildSavedCard(1L, worldId, cardTypeId, imageUrl);
         when(cardRepositoryPort.save(any(Card.class))).thenReturn(savedCard);
 
-        // Act
-        Card result = createCardUseCase.execute(worldId, cardTypeId, imageUrl);
+        Card result = createCardUseCase.execute(worldId, cardTypeId, "Sem nome", imageUrl);
 
-        // Assert
         assertNotNull(result);
         assertEquals(1L, result.getId());
         assertEquals(worldId, result.getWorldId());
@@ -60,11 +63,8 @@ class CreateCardUseCaseImplTest {
     @Test
     @DisplayName("Should throw IllegalArgumentException when worldId is null")
     void testExecute_WorldIdNull() {
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            createCardUseCase.execute(null, 1L, "http://example.com/card.jpg");
-        });
-
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+                createCardUseCase.execute(null, 1L, "Sem nome", "http://example.com/card.jpg"));
         assertEquals("World ID must be valid", exception.getMessage());
         verify(cardRepositoryPort, never()).save(any(Card.class));
     }
@@ -72,11 +72,8 @@ class CreateCardUseCaseImplTest {
     @Test
     @DisplayName("Should throw IllegalArgumentException when worldId is zero")
     void testExecute_WorldIdZero() {
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            createCardUseCase.execute(0L, 1L, "http://example.com/card.jpg");
-        });
-
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+                createCardUseCase.execute(0L, 1L, "Sem nome", "http://example.com/card.jpg"));
         assertEquals("World ID must be valid", exception.getMessage());
         verify(cardRepositoryPort, never()).save(any(Card.class));
     }
@@ -84,11 +81,8 @@ class CreateCardUseCaseImplTest {
     @Test
     @DisplayName("Should throw IllegalArgumentException when worldId is negative")
     void testExecute_WorldIdNegative() {
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            createCardUseCase.execute(-1L, 1L, "http://example.com/card.jpg");
-        });
-
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+                createCardUseCase.execute(-1L, 1L, "Sem nome", "http://example.com/card.jpg"));
         assertEquals("World ID must be valid", exception.getMessage());
         verify(cardRepositoryPort, never()).save(any(Card.class));
     }
@@ -96,11 +90,8 @@ class CreateCardUseCaseImplTest {
     @Test
     @DisplayName("Should throw IllegalArgumentException when cardTypeId is null")
     void testExecute_CardTypeIdNull() {
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            createCardUseCase.execute(1L, null, "http://example.com/card.jpg");
-        });
-
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+                createCardUseCase.execute(1L, null, "Sem nome", "http://example.com/card.jpg"));
         assertEquals("Card type ID must be valid", exception.getMessage());
         verify(cardRepositoryPort, never()).save(any(Card.class));
     }
@@ -108,11 +99,8 @@ class CreateCardUseCaseImplTest {
     @Test
     @DisplayName("Should throw IllegalArgumentException when cardTypeId is zero")
     void testExecute_CardTypeIdZero() {
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            createCardUseCase.execute(1L, 0L, "http://example.com/card.jpg");
-        });
-
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+                createCardUseCase.execute(1L, 0L, "Sem nome", "http://example.com/card.jpg"));
         assertEquals("Card type ID must be valid", exception.getMessage());
         verify(cardRepositoryPort, never()).save(any(Card.class));
     }
@@ -120,11 +108,8 @@ class CreateCardUseCaseImplTest {
     @Test
     @DisplayName("Should throw IllegalArgumentException when cardTypeId is negative")
     void testExecute_CardTypeIdNegative() {
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            createCardUseCase.execute(1L, -1L, "http://example.com/card.jpg");
-        });
-
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+                createCardUseCase.execute(1L, -1L, "Sem nome", "http://example.com/card.jpg"));
         assertEquals("Card type ID must be valid", exception.getMessage());
         verify(cardRepositoryPort, never()).save(any(Card.class));
     }
@@ -132,19 +117,14 @@ class CreateCardUseCaseImplTest {
     @Test
     @DisplayName("Should create card with null imageUrl")
     void testExecute_NullImageUrl() {
-        // Arrange
         Long worldId = 1L;
         Long cardTypeId = 1L;
-        String imageUrl = null;
 
-        Card savedCard = new Card(1L, worldId, cardTypeId, imageUrl, new ArrayList<>(), OffsetDateTime.now(), false,
-                null);
+        Card savedCard = buildSavedCard(1L, worldId, cardTypeId, null);
         when(cardRepositoryPort.save(any(Card.class))).thenReturn(savedCard);
 
-        // Act
-        Card result = createCardUseCase.execute(worldId, cardTypeId, imageUrl);
+        Card result = createCardUseCase.execute(worldId, cardTypeId, "Sem nome", (String) null);
 
-        // Assert
         assertNotNull(result);
         assertNull(result.getImageUrl());
         verify(cardRepositoryPort, times(1)).save(any(Card.class));
@@ -153,38 +133,29 @@ class CreateCardUseCaseImplTest {
     @Test
     @DisplayName("Should call repository save method exactly once")
     void testExecute_RepositoryCalled() {
-        // Arrange
         Long worldId = 1L;
         Long cardTypeId = 1L;
-        String imageUrl = "http://example.com/card.jpg";
 
-        Card savedCard = new Card(1L, worldId, cardTypeId, imageUrl, new ArrayList<>(), OffsetDateTime.now(), false,
-                null);
-        when(cardRepositoryPort.save(any(Card.class))).thenReturn(savedCard);
+        when(cardRepositoryPort.save(any(Card.class))).thenReturn(buildSavedCard(1L, worldId, cardTypeId, null));
 
-        // Act
-        createCardUseCase.execute(worldId, cardTypeId, imageUrl);
+        createCardUseCase.execute(worldId, cardTypeId, "Sem nome", (String) null);
 
-        // Assert
         verify(cardRepositoryPort, times(1)).save(any(Card.class));
     }
 
     @Test
-    @DisplayName("Should initialize aliases as empty list")
+    @DisplayName("Should initialize sections as empty list")
     void testExecute_EmptyAliasesList() {
-        // Arrange
         Long worldId = 1L;
         Long cardTypeId = 1L;
-        String imageUrl = "http://example.com/card.jpg";
 
-        Card savedCard = new Card(1L, worldId, cardTypeId, imageUrl, new ArrayList<>(), OffsetDateTime.now(), false,
-                null);
+        Card savedCard = buildSavedCard(1L, worldId, cardTypeId, "http://example.com/card.jpg");
         when(cardRepositoryPort.save(any(Card.class))).thenReturn(savedCard);
 
-        // Act
-        Card result = createCardUseCase.execute(worldId, cardTypeId, imageUrl);
+        Card result = createCardUseCase.execute(worldId, cardTypeId, "Sem nome", "http://example.com/card.jpg");
 
-        // Assert
+        assertNotNull(result.getSections());
+        assertTrue(result.getSections().isEmpty());
         assertNotNull(result.getAliases());
         assertTrue(result.getAliases().isEmpty());
     }
@@ -192,19 +163,13 @@ class CreateCardUseCaseImplTest {
     @Test
     @DisplayName("Should create card with large worldId and cardTypeId values")
     void testExecute_LargeIds() {
-        // Arrange
         Long worldId = Long.MAX_VALUE;
         Long cardTypeId = Long.MAX_VALUE;
-        String imageUrl = "http://example.com/card.jpg";
 
-        Card savedCard = new Card(1L, worldId, cardTypeId, imageUrl, new ArrayList<>(), OffsetDateTime.now(), false,
-                null);
-        when(cardRepositoryPort.save(any(Card.class))).thenReturn(savedCard);
+        when(cardRepositoryPort.save(any(Card.class))).thenReturn(buildSavedCard(1L, worldId, cardTypeId, null));
 
-        // Act
-        Card result = createCardUseCase.execute(worldId, cardTypeId, imageUrl);
+        Card result = createCardUseCase.execute(worldId, cardTypeId, "Sem nome", (String) null);
 
-        // Assert
         assertNotNull(result);
         assertEquals(worldId, result.getWorldId());
         assertEquals(cardTypeId, result.getCardTypeId());

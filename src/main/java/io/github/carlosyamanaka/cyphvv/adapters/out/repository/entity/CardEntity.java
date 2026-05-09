@@ -22,9 +22,6 @@ public class CardEntity {
     @Column(name = "card_name", nullable = false)
     private String cardName;
 
-    @Column(name = "description")
-    private String description;
-
     @Column(name = "img_url")
     private String imageUrl;
 
@@ -73,14 +70,6 @@ public class CardEntity {
 
     public void setCardName(String cardName) {
         this.cardName = cardName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getImageUrl() {

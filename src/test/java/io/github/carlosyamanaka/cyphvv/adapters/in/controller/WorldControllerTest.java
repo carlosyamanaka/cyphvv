@@ -60,6 +60,18 @@ class WorldControllerTest {
         private ListCardsByWorldUseCase listCardsByWorldUseCase;
 
         @Mock
+        private AddCardAliasUseCase addCardAliasUseCase;
+
+        @Mock
+        private RemoveCardAliasUseCase removeCardAliasUseCase;
+
+        @Mock
+        private UpdateCardNameUseCase updateCardNameUseCase;
+
+        @Mock
+        private SaveCardSectionsUseCase saveCardSectionsUseCase;
+
+        @Mock
         private WorldControllerMapper worldMapper;
 
         @Mock
@@ -79,6 +91,8 @@ class WorldControllerTest {
                                 createWorldUseCase, createCardUseCase, createCardTypeUseCase,
                                 listCardTypesByWorldUseCase, getCardTypeByIdUseCase, updateCardTypeUseCase,
                                 deleteCardTypeUseCase, listWorldsUseCase, listCardsByWorldUseCase,
+                                addCardAliasUseCase, removeCardAliasUseCase,
+                                updateCardNameUseCase, saveCardSectionsUseCase,
                                 worldMapper, cardMapper, cardTypeMapper);
 
                 mockUser = new FirebaseUserDetails(USER_ID, USER_EMAIL, "John Doe", new java.util.HashMap<>());
@@ -162,21 +176,21 @@ class WorldControllerTest {
         void testListCardsByWorld_Success() {
                 // Arrange
                 Long worldId = 1L;
-                Card card1 = new Card(1L, worldId, 1L, "Card 1", "Desc 1", "http://example.com/card1.jpg",
-                                new ArrayList<>(), OffsetDateTime.now(),
+                Card card1 = new Card(1L, worldId, 1L, "Card 1", "http://example.com/card1.jpg",
+                                new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(),
                                 false, null);
-                Card card2 = new Card(2L, worldId, 2L, "Card 2", "Desc 2", "http://example.com/card2.jpg",
-                                new ArrayList<>(), OffsetDateTime.now(),
+                Card card2 = new Card(2L, worldId, 2L, "Card 2", "http://example.com/card2.jpg",
+                                new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(),
                                 false, null);
                 List<Card> cards = List.of(card1, card2);
 
                 when(listCardsByWorldUseCase.execute(worldId)).thenReturn(cards);
 
                 io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardResponse cardResponse1 = new io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardResponse(
-                                1L, worldId, 1L, "Card 1", "Desc 1", "http://example.com/card1.jpg", new ArrayList<>(),
+                                1L, worldId, 1L, "Card 1", "http://example.com/card1.jpg", new ArrayList<>(), new ArrayList<>(),
                                 OffsetDateTime.now());
                 io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardResponse cardResponse2 = new io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardResponse(
-                                2L, worldId, 2L, "Card 2", "Desc 2", "http://example.com/card2.jpg", new ArrayList<>(),
+                                2L, worldId, 2L, "Card 2", "http://example.com/card2.jpg", new ArrayList<>(), new ArrayList<>(),
                                 OffsetDateTime.now());
 
                 when(cardMapper.toResponse(card1)).thenReturn(cardResponse1);
@@ -201,18 +215,17 @@ class WorldControllerTest {
                 Long worldId = 1L;
                 Long cardTypeId = 1L;
                 String cardName = "Card teste";
-                String description = "Descricao";
                 String imageUrl = "http://example.com/card.jpg";
-                CreateCardRequest request = new CreateCardRequest(cardName, description, cardTypeId, imageUrl);
+                CreateCardRequest request = new CreateCardRequest(cardName, cardTypeId, imageUrl);
 
-                Card createdCard = new Card(1L, worldId, cardTypeId, cardName, description, imageUrl, new ArrayList<>(),
+                Card createdCard = new Card(1L, worldId, cardTypeId, cardName, imageUrl, new ArrayList<>(), new ArrayList<>(),
                                 OffsetDateTime.now(), false,
                                 null);
-                when(createCardUseCase.execute(worldId, cardTypeId, cardName, description, imageUrl))
+                when(createCardUseCase.execute(worldId, cardTypeId, cardName, imageUrl))
                                 .thenReturn(createdCard);
 
                 io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardResponse response = new io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardResponse(
-                                1L, worldId, cardTypeId, cardName, description, imageUrl, new ArrayList<>(),
+                                1L, worldId, cardTypeId, cardName, imageUrl, new ArrayList<>(), new ArrayList<>(),
                                 OffsetDateTime.now());
                 when(cardMapper.toResponse(createdCard)).thenReturn(response);
 
@@ -225,7 +238,7 @@ class WorldControllerTest {
                 assertEquals(HttpStatus.CREATED, result.getStatusCode());
                 assertNotNull(result.getBody());
                 assertEquals(cardTypeId, result.getBody().cardTypeId());
-                verify(createCardUseCase, times(1)).execute(worldId, cardTypeId, cardName, description, imageUrl);
+                verify(createCardUseCase, times(1)).execute(worldId, cardTypeId, cardName, imageUrl);
         }
 
         @Test

@@ -2,6 +2,7 @@ package io.github.carlosyamanaka.cyphvv.adapters.out.repository;
 
 import io.github.carlosyamanaka.cyphvv.adapters.out.repository.entity.CardEntity;
 import io.github.carlosyamanaka.cyphvv.adapters.out.repository.mapper.CardRepositoryMapper;
+import io.github.carlosyamanaka.cyphvv.adapters.out.repository.mapper.CardSectionRepositoryMapper;
 import io.github.carlosyamanaka.cyphvv.application.core.domain.Card;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,13 +27,19 @@ class CardRepositoryAdapterTest {
     private CardJpaRepository cardJpaRepository;
 
     @Mock
+    private CardSectionJpaRepository cardSectionJpaRepository;
+
+    @Mock
     private CardRepositoryMapper cardRepositoryMapper;
+
+    @Mock
+    private CardSectionRepositoryMapper cardSectionRepositoryMapper;
 
     private CardRepositoryAdapter adapter;
 
     @BeforeEach
     void setUp() {
-        adapter = new CardRepositoryAdapter(cardJpaRepository, cardRepositoryMapper);
+        adapter = new CardRepositoryAdapter(cardJpaRepository, cardSectionJpaRepository, cardRepositoryMapper, cardSectionRepositoryMapper);
     }
 
     @Test
@@ -42,7 +49,7 @@ class CardRepositoryAdapterTest {
         Long worldId = 1L;
         Long cardTypeId = 1L;
         String imageUrl = "http://example.com/card.jpg";
-        Card card = new Card(null, worldId, cardTypeId, imageUrl, new ArrayList<>(), OffsetDateTime.now(), false, null);
+        Card card = new Card(null, worldId, cardTypeId, "Sem nome", imageUrl, new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(), false, null);
 
         CardEntity entity = new CardEntity();
         entity.setId(1L);
@@ -50,7 +57,7 @@ class CardRepositoryAdapterTest {
         entity.setCardTypeId(cardTypeId);
         entity.setImageUrl(imageUrl);
 
-        Card savedCard = new Card(1L, worldId, cardTypeId, imageUrl, new ArrayList<>(), OffsetDateTime.now(), false,
+        Card savedCard = new Card(1L, worldId, cardTypeId, "Sem nome", imageUrl, new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(), false,
                 null);
 
         when(cardRepositoryMapper.toEntity(card)).thenReturn(entity);
@@ -86,14 +93,16 @@ class CardRepositoryAdapterTest {
 
         List<CardEntity> entities = List.of(entity1, entity2);
 
-        Card card1 = new Card(1L, worldId, 1L, "http://example.com/card1.jpg", new ArrayList<>(), OffsetDateTime.now(),
+        Card card1 = new Card(1L, worldId, 1L, "Sem nome", "http://example.com/card1.jpg", new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(),
                 false, null);
-        Card card2 = new Card(2L, worldId, 2L, "http://example.com/card2.jpg", new ArrayList<>(), OffsetDateTime.now(),
+        Card card2 = new Card(2L, worldId, 2L, "Sem nome", "http://example.com/card2.jpg", new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(),
                 false, null);
 
         when(cardJpaRepository.findByWorldIdAndNotDeleted(worldId)).thenReturn(entities);
-        when(cardRepositoryMapper.toDomain(entity1)).thenReturn(card1);
-        when(cardRepositoryMapper.toDomain(entity2)).thenReturn(card2);
+        when(cardSectionJpaRepository.findByCardIdAndNotDeleted(1L)).thenReturn(new ArrayList<>());
+        when(cardSectionJpaRepository.findByCardIdAndNotDeleted(2L)).thenReturn(new ArrayList<>());
+        when(cardRepositoryMapper.toDomainWithSections(eq(entity1), anyList())).thenReturn(card1);
+        when(cardRepositoryMapper.toDomainWithSections(eq(entity2), anyList())).thenReturn(card2);
 
         // Act
         List<Card> result = adapter.findByWorldId(worldId);
@@ -126,10 +135,10 @@ class CardRepositoryAdapterTest {
     @DisplayName("Should map entity to domain in save method")
     void testSave_MappingCalled() {
         // Arrange
-        Card card = new Card(null, 1L, 1L, "http://example.com/card.jpg", new ArrayList<>(), OffsetDateTime.now(),
+        Card card = new Card(null, 1L, 1L, "Sem nome", "http://example.com/card.jpg", new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(),
                 false, null);
         CardEntity entity = new CardEntity();
-        Card savedCard = new Card(1L, 1L, 1L, "http://example.com/card.jpg", new ArrayList<>(), OffsetDateTime.now(),
+        Card savedCard = new Card(1L, 1L, 1L, "Sem nome", "http://example.com/card.jpg", new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(),
                 false, null);
 
         when(cardRepositoryMapper.toEntity(card)).thenReturn(entity);
@@ -148,10 +157,10 @@ class CardRepositoryAdapterTest {
     @DisplayName("Should call JPA repository save exactly once")
     void testSave_RepositoryCalled() {
         // Arrange
-        Card card = new Card(null, 1L, 1L, "http://example.com/card.jpg", new ArrayList<>(), OffsetDateTime.now(),
+        Card card = new Card(null, 1L, 1L, "Sem nome", "http://example.com/card.jpg", new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(),
                 false, null);
         CardEntity entity = new CardEntity();
-        Card savedCard = new Card(1L, 1L, 1L, "http://example.com/card.jpg", new ArrayList<>(), OffsetDateTime.now(),
+        Card savedCard = new Card(1L, 1L, 1L, "Sem nome", "http://example.com/card.jpg", new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(),
                 false, null);
 
         when(cardRepositoryMapper.toEntity(card)).thenReturn(entity);
@@ -186,10 +195,10 @@ class CardRepositoryAdapterTest {
         Long worldId = 1L;
         Long cardTypeId = 2L;
         String imageUrl = "http://example.com/test-card.jpg";
-        Card card = new Card(null, worldId, cardTypeId, imageUrl, new ArrayList<>(), OffsetDateTime.now(), false, null);
+        Card card = new Card(null, worldId, cardTypeId, "Sem nome", imageUrl, new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(), false, null);
 
         CardEntity entity = new CardEntity();
-        Card savedCard = new Card(99L, worldId, cardTypeId, imageUrl, new ArrayList<>(), OffsetDateTime.now(), false,
+        Card savedCard = new Card(99L, worldId, cardTypeId, "Sem nome", imageUrl, new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(), false,
                 null);
 
         when(cardRepositoryMapper.toEntity(card)).thenReturn(entity);
@@ -210,10 +219,10 @@ class CardRepositoryAdapterTest {
     @DisplayName("Should handle cards with empty aliases list")
     void testSave_EmptyAliases() {
         // Arrange
-        Card card = new Card(null, 1L, 1L, "http://example.com/card.jpg", new ArrayList<>(), OffsetDateTime.now(),
+        Card card = new Card(null, 1L, 1L, "Sem nome", "http://example.com/card.jpg", new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(),
                 false, null);
         CardEntity entity = new CardEntity();
-        Card savedCard = new Card(1L, 1L, 1L, "http://example.com/card.jpg", new ArrayList<>(), OffsetDateTime.now(),
+        Card savedCard = new Card(1L, 1L, 1L, "Sem nome", "http://example.com/card.jpg", new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(),
                 false, null);
 
         when(cardRepositoryMapper.toEntity(card)).thenReturn(entity);
@@ -232,17 +241,17 @@ class CardRepositoryAdapterTest {
     @DisplayName("Should handle multiple saves in sequence")
     void testSave_MultipleCalls() {
         // Arrange
-        Card card1 = new Card(null, 1L, 1L, "http://example.com/card1.jpg", new ArrayList<>(), OffsetDateTime.now(),
+        Card card1 = new Card(null, 1L, 1L, "Sem nome", "http://example.com/card1.jpg", new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(),
                 false, null);
-        Card card2 = new Card(null, 2L, 2L, "http://example.com/card2.jpg", new ArrayList<>(), OffsetDateTime.now(),
+        Card card2 = new Card(null, 2L, 2L, "Sem nome", "http://example.com/card2.jpg", new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(),
                 false, null);
 
         CardEntity entity1 = new CardEntity();
         CardEntity entity2 = new CardEntity();
 
-        Card savedCard1 = new Card(1L, 1L, 1L, "http://example.com/card1.jpg", new ArrayList<>(), OffsetDateTime.now(),
+        Card savedCard1 = new Card(1L, 1L, 1L, "Sem nome", "http://example.com/card1.jpg", new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(),
                 false, null);
-        Card savedCard2 = new Card(2L, 2L, 2L, "http://example.com/card2.jpg", new ArrayList<>(), OffsetDateTime.now(),
+        Card savedCard2 = new Card(2L, 2L, 2L, "Sem nome", "http://example.com/card2.jpg", new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(),
                 false, null);
 
         when(cardRepositoryMapper.toEntity(card1)).thenReturn(entity1);

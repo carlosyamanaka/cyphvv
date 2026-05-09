@@ -8,28 +8,23 @@ public class Card {
     private Long worldId;
     private Long cardTypeId;
     private String cardName;
-    private String description;
     private String imageUrl;
     private List<String> aliases;
+    private List<CardSection> sections;
     private OffsetDateTime createdAt;
     private Boolean deleted;
     private OffsetDateTime deletedAt;
 
-    public Card(Long id, Long worldId, Long cardTypeId, String imageUrl, List<String> aliases,
-            OffsetDateTime createdAt, Boolean deleted, OffsetDateTime deletedAt) {
-        this(id, worldId, cardTypeId, null, null, imageUrl, aliases, createdAt, deleted, deletedAt);
-    }
-
-    public Card(Long id, Long worldId, Long cardTypeId, String cardName, String description, String imageUrl,
-            List<String> aliases,
+    public Card(Long id, Long worldId, Long cardTypeId, String cardName,
+            String imageUrl, List<String> aliases, List<CardSection> sections,
             OffsetDateTime createdAt, Boolean deleted, OffsetDateTime deletedAt) {
         this.id = id;
         this.worldId = worldId;
         this.cardTypeId = cardTypeId;
         this.cardName = cardName;
-        this.description = description;
         this.imageUrl = imageUrl;
         this.aliases = aliases;
+        this.sections = sections;
         this.createdAt = createdAt;
         this.deleted = deleted;
         this.deletedAt = deletedAt;
@@ -40,44 +35,37 @@ public class Card {
         this.deletedAt = OffsetDateTime.now();
     }
 
+    public void addAlias(String alias) {
+        if (alias == null || alias.isBlank()) {
+            return;
+        }
+        if (this.aliases == null) {
+            this.aliases = new java.util.ArrayList<>();
+        }
+        if (!this.aliases.contains(alias)) {
+            this.aliases.add(alias);
+        }
+    }
+
+    public void removeAlias(String alias) {
+        if (this.aliases != null) {
+            this.aliases.remove(alias);
+        }
+    }
+
+    public void updateName(String cardName) {
+        this.cardName = cardName;
+    }
+
     // Getters
-    public Long getId() {
-        return id;
-    }
-
-    public Long getWorldId() {
-        return worldId;
-    }
-
-    public Long getCardTypeId() {
-        return cardTypeId;
-    }
-
-    public String getCardName() {
-        return cardName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public List<String> getAliases() {
-        return aliases;
-    }
-
-    public OffsetDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public OffsetDateTime getDeletedAt() {
-        return deletedAt;
-    }
+    public Long getId() { return id; }
+    public Long getWorldId() { return worldId; }
+    public Long getCardTypeId() { return cardTypeId; }
+    public String getCardName() { return cardName; }
+    public String getImageUrl() { return imageUrl; }
+    public List<String> getAliases() { return aliases; }
+    public List<CardSection> getSections() { return sections; }
+    public OffsetDateTime getCreatedAt() { return createdAt; }
+    public Boolean getDeleted() { return deleted; }
+    public OffsetDateTime getDeletedAt() { return deletedAt; }
 }
