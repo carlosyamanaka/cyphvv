@@ -11,5 +11,6 @@ public record CardResponse(
                 String imageUrl,
                 List<String> aliases,
                 List<CardSectionResponse> sections,
+                List<CardRelationshipResponse> relationships,
                 OffsetDateTime createdAt) {
 }

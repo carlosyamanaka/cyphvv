@@ -35,6 +35,7 @@ public class CreateCardUseCaseImpl implements CreateCardUseCase {
                 imageUrl,
                 Collections.emptyList(),
                 Collections.emptyList(),
+                Collections.emptyList(),
                 OffsetDateTime.now(),
                 false,
                 null);

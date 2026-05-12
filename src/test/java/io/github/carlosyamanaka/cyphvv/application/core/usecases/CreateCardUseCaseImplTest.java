@@ -35,6 +35,7 @@ class CreateCardUseCaseImplTest {
     private Card buildSavedCard(Long id, Long worldId, Long cardTypeId, String imageUrl) {
         return new Card(id, worldId, cardTypeId, "Sem nome", imageUrl,
                 Collections.<String>emptyList(), Collections.<CardSection>emptyList(),
+                Collections.emptyList(),
                 OffsetDateTime.now(), false, null);
     }
 

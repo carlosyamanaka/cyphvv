@@ -26,7 +26,7 @@ class CardControllerMapperTest {
 
     private Card buildCard(Long id, Long worldId, Long cardTypeId, String imageUrl,
             List<String> aliases, List<CardSection> sections, OffsetDateTime createdAt) {
-        return new Card(id, worldId, cardTypeId, "Nome", imageUrl, aliases, sections, createdAt, false, null);
+        return new Card(id, worldId, cardTypeId, "Nome", imageUrl, aliases, sections, Collections.emptyList(), createdAt, false, null);
     }
 
     @Test

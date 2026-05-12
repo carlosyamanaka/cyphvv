@@ -72,6 +72,9 @@ class WorldControllerTest {
         private SaveCardSectionsUseCase saveCardSectionsUseCase;
 
         @Mock
+        private SaveCardRelationshipsUseCase saveCardRelationshipsUseCase;
+
+        @Mock
         private WorldControllerMapper worldMapper;
 
         @Mock
@@ -93,6 +96,7 @@ class WorldControllerTest {
                                 deleteCardTypeUseCase, listWorldsUseCase, listCardsByWorldUseCase,
                                 addCardAliasUseCase, removeCardAliasUseCase,
                                 updateCardNameUseCase, saveCardSectionsUseCase,
+                                saveCardRelationshipsUseCase,
                                 worldMapper, cardMapper, cardTypeMapper);
 
                 mockUser = new FirebaseUserDetails(USER_ID, USER_EMAIL, "John Doe", new java.util.HashMap<>());
@@ -177,10 +181,10 @@ class WorldControllerTest {
                 // Arrange
                 Long worldId = 1L;
                 Card card1 = new Card(1L, worldId, 1L, "Card 1", "http://example.com/card1.jpg",
-                                new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(),
+                                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(),
                                 false, null);
                 Card card2 = new Card(2L, worldId, 2L, "Card 2", "http://example.com/card2.jpg",
-                                new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(),
+                                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), OffsetDateTime.now(),
                                 false, null);
                 List<Card> cards = List.of(card1, card2);
 
@@ -188,10 +192,10 @@ class WorldControllerTest {
 
                 io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardResponse cardResponse1 = new io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardResponse(
                                 1L, worldId, 1L, "Card 1", "http://example.com/card1.jpg", new ArrayList<>(), new ArrayList<>(),
-                                OffsetDateTime.now());
+                                new ArrayList<>(), OffsetDateTime.now());
                 io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardResponse cardResponse2 = new io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardResponse(
                                 2L, worldId, 2L, "Card 2", "http://example.com/card2.jpg", new ArrayList<>(), new ArrayList<>(),
-                                OffsetDateTime.now());
+                                new ArrayList<>(), OffsetDateTime.now());
 
                 when(cardMapper.toResponse(card1)).thenReturn(cardResponse1);
                 when(cardMapper.toResponse(card2)).thenReturn(cardResponse2);
@@ -219,6 +223,7 @@ class WorldControllerTest {
                 CreateCardRequest request = new CreateCardRequest(cardName, cardTypeId, imageUrl);
 
                 Card createdCard = new Card(1L, worldId, cardTypeId, cardName, imageUrl, new ArrayList<>(), new ArrayList<>(),
+                                new ArrayList<>(),
                                 OffsetDateTime.now(), false,
                                 null);
                 when(createCardUseCase.execute(worldId, cardTypeId, cardName, imageUrl))
@@ -226,6 +231,7 @@ class WorldControllerTest {
 
                 io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardResponse response = new io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardResponse(
                                 1L, worldId, cardTypeId, cardName, imageUrl, new ArrayList<>(), new ArrayList<>(),
+                                new ArrayList<>(),
                                 OffsetDateTime.now());
                 when(cardMapper.toResponse(createdCard)).thenReturn(response);
 

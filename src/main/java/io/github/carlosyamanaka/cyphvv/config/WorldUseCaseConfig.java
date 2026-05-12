@@ -1,35 +1,8 @@
 package io.github.carlosyamanaka.cyphvv.config;
 
-import io.github.carlosyamanaka.cyphvv.application.core.usecases.CreateWorldUseCaseImpl;
-import io.github.carlosyamanaka.cyphvv.application.core.usecases.CreateCardUseCaseImpl;
-import io.github.carlosyamanaka.cyphvv.application.core.usecases.CreateCardTypeUseCaseImpl;
-import io.github.carlosyamanaka.cyphvv.application.core.usecases.ListCardTypesByWorldUseCaseImpl;
-import io.github.carlosyamanaka.cyphvv.application.core.usecases.GetCardTypeByIdUseCaseImpl;
-import io.github.carlosyamanaka.cyphvv.application.core.usecases.UpdateCardTypeUseCaseImpl;
-import io.github.carlosyamanaka.cyphvv.application.core.usecases.DeleteCardTypeUseCaseImpl;
-import io.github.carlosyamanaka.cyphvv.application.core.usecases.ListWorldsUseCaseImpl;
-import io.github.carlosyamanaka.cyphvv.application.core.usecases.ListCardsByWorldUseCaseImpl;
-import io.github.carlosyamanaka.cyphvv.application.core.usecases.AddCardAliasUseCaseImpl;
-import io.github.carlosyamanaka.cyphvv.application.core.usecases.RemoveCardAliasUseCaseImpl;
-import io.github.carlosyamanaka.cyphvv.application.core.usecases.UpdateCardNameUseCaseImpl;
-import io.github.carlosyamanaka.cyphvv.application.core.usecases.SaveCardSectionsUseCaseImpl;
-import io.github.carlosyamanaka.cyphvv.application.ports.in.CreateWorldUseCase;
-import io.github.carlosyamanaka.cyphvv.application.ports.in.CreateCardUseCase;
-import io.github.carlosyamanaka.cyphvv.application.ports.in.CreateCardTypeUseCase;
-import io.github.carlosyamanaka.cyphvv.application.ports.in.ListCardTypesByWorldUseCase;
-import io.github.carlosyamanaka.cyphvv.application.ports.in.GetCardTypeByIdUseCase;
-import io.github.carlosyamanaka.cyphvv.application.ports.in.UpdateCardTypeUseCase;
-import io.github.carlosyamanaka.cyphvv.application.ports.in.DeleteCardTypeUseCase;
-import io.github.carlosyamanaka.cyphvv.application.ports.in.ListWorldsUseCase;
-import io.github.carlosyamanaka.cyphvv.application.ports.in.ListCardsByWorldUseCase;
-import io.github.carlosyamanaka.cyphvv.application.ports.in.AddCardAliasUseCase;
-import io.github.carlosyamanaka.cyphvv.application.ports.in.RemoveCardAliasUseCase;
-import io.github.carlosyamanaka.cyphvv.application.ports.in.UpdateCardNameUseCase;
-import io.github.carlosyamanaka.cyphvv.application.ports.in.SaveCardSectionsUseCase;
-import io.github.carlosyamanaka.cyphvv.application.ports.out.CardSectionRepositoryPort;
-import io.github.carlosyamanaka.cyphvv.application.ports.out.CardTypeRepositoryPort;
-import io.github.carlosyamanaka.cyphvv.application.ports.out.WorldRepositoryPort;
-import io.github.carlosyamanaka.cyphvv.application.ports.out.CardRepositoryPort;
+import io.github.carlosyamanaka.cyphvv.application.core.usecases.*;
+import io.github.carlosyamanaka.cyphvv.application.ports.in.*;
+import io.github.carlosyamanaka.cyphvv.application.ports.out.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -38,8 +11,6 @@ public class WorldUseCaseConfig {
 
     @Bean
     public CreateWorldUseCase createWorldUseCase(WorldRepositoryPort worldRepositoryPort, CardTypeRepositoryPort cardTypeRepositoryPort) {
-        // telling spring to inject the WorldRepositoryPort and CardTypeRepositoryPort implementations when creating
-        // the CreateWorldUseCase bean
         return new CreateWorldUseCaseImpl(worldRepositoryPort, cardTypeRepositoryPort);
     }
 
@@ -102,5 +73,12 @@ public class WorldUseCaseConfig {
     public SaveCardSectionsUseCase saveCardSectionsUseCase(CardRepositoryPort cardRepositoryPort,
             CardSectionRepositoryPort cardSectionRepositoryPort) {
         return new SaveCardSectionsUseCaseImpl(cardRepositoryPort, cardSectionRepositoryPort);
+    }
+
+    @Bean
+    public SaveCardRelationshipsUseCase saveCardRelationshipsUseCase(CardRepositoryPort cardRepositoryPort,
+            CardRelationshipRepositoryPort cardRelationshipRepositoryPort,
+            CardSectionRepositoryPort cardSectionRepositoryPort) {
+        return new SaveCardRelationshipsUseCaseImpl(cardRepositoryPort, cardRelationshipRepositoryPort, cardSectionRepositoryPort);
     }
 }

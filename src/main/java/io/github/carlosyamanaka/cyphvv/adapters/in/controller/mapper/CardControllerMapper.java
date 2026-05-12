@@ -1,6 +1,7 @@
 package io.github.carlosyamanaka.cyphvv.adapters.in.controller.mapper;
 
 import io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardResponse;
+import io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardRelationshipResponse;
 import io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardSectionResponse;
 import io.github.carlosyamanaka.cyphvv.application.core.domain.Card;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,19 @@ public class CardControllerMapper {
                         .map(s -> new CardSectionResponse(s.getId(), s.getType(), s.getContent()))
                         .toList();
 
+        List<CardRelationshipResponse> relationshipResponses = card.getRelationships() == null
+                ? Collections.emptyList()
+                : card.getRelationships().stream()
+                        .map(r -> {
+                            List<CardRelationshipResponse.CardRelationshipTargetResponse> targets = r.getTargets() == null
+                                    ? Collections.emptyList()
+                                    : r.getTargets().stream()
+                                            .map(t -> new CardRelationshipResponse.CardRelationshipTargetResponse(t.getTargetCardId()))
+                                            .toList();
+                            return new CardRelationshipResponse(r.getId(), r.getName(), targets);
+                        })
+                        .toList();
+
         return new CardResponse(
                 card.getId(),
                 card.getWorldId(),
@@ -26,6 +40,7 @@ public class CardControllerMapper {
                 card.getImageUrl(),
                 card.getAliases(),
                 sectionResponses,
+                relationshipResponses,
                 card.getCreatedAt());
     }
 }

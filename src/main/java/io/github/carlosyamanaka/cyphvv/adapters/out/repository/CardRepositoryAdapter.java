@@ -4,7 +4,9 @@ import io.github.carlosyamanaka.cyphvv.adapters.out.repository.mapper.CardReposi
 import io.github.carlosyamanaka.cyphvv.adapters.out.repository.mapper.CardSectionRepositoryMapper;
 import io.github.carlosyamanaka.cyphvv.application.core.domain.Card;
 import io.github.carlosyamanaka.cyphvv.application.core.domain.CardSection;
+import io.github.carlosyamanaka.cyphvv.application.core.domain.CardRelationship;
 import io.github.carlosyamanaka.cyphvv.application.ports.out.CardRepositoryPort;
+import io.github.carlosyamanaka.cyphvv.application.ports.out.CardRelationshipRepositoryPort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,15 +18,18 @@ public class CardRepositoryAdapter implements CardRepositoryPort {
     private final CardSectionJpaRepository cardSectionJpaRepository;
     private final CardRepositoryMapper mapper;
     private final CardSectionRepositoryMapper sectionMapper;
+    private final CardRelationshipRepositoryPort cardRelationshipRepositoryPort;
 
     public CardRepositoryAdapter(CardJpaRepository cardJpaRepository,
             CardSectionJpaRepository cardSectionJpaRepository,
             CardRepositoryMapper mapper,
-            CardSectionRepositoryMapper sectionMapper) {
+            CardSectionRepositoryMapper sectionMapper,
+            CardRelationshipRepositoryPort cardRelationshipRepositoryPort) {
         this.cardJpaRepository = cardJpaRepository;
         this.cardSectionJpaRepository = cardSectionJpaRepository;
         this.mapper = mapper;
         this.sectionMapper = sectionMapper;
+        this.cardRelationshipRepositoryPort = cardRelationshipRepositoryPort;
     }
 
     @Override
@@ -42,7 +47,8 @@ public class CardRepositoryAdapter implements CardRepositoryPort {
                             .stream()
                             .map(sectionMapper::toDomain)
                             .toList();
-                    return mapper.toDomainWithSections(entity, sections);
+                    List<CardRelationship> relationships = cardRelationshipRepositoryPort.findByCardId(entity.getId());
+                    return mapper.toDomainWithAllComponents(entity, sections, relationships);
                 })
                 .toList();
     }
@@ -56,7 +62,8 @@ public class CardRepositoryAdapter implements CardRepositoryPort {
                             .stream()
                             .map(sectionMapper::toDomain)
                             .toList();
-                    return mapper.toDomainWithSections(entity, sections);
+                    List<CardRelationship> relationships = cardRelationshipRepositoryPort.findByCardId(entity.getId());
+                    return mapper.toDomainWithAllComponents(entity, sections, relationships);
                 })
                 .orElse(null);
     }
@@ -64,7 +71,10 @@ public class CardRepositoryAdapter implements CardRepositoryPort {
     @Override
     public Card findByIdWithSections(Long worldId, Long cardId, List<CardSection> sections) {
         return cardJpaRepository.findByWorldIdAndIdAndNotDeleted(worldId, cardId)
-                .map(entity -> mapper.toDomainWithSections(entity, sections))
+                .map(entity -> {
+                    List<CardRelationship> relationships = cardRelationshipRepositoryPort.findByCardId(entity.getId());
+                    return mapper.toDomainWithAllComponents(entity, sections, relationships);
+                })
                 .orElse(null);
     }
 }

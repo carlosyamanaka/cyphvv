@@ -11,12 +11,14 @@ public class Card {
     private String imageUrl;
     private List<String> aliases;
     private List<CardSection> sections;
+    private List<CardRelationship> relationships;
     private OffsetDateTime createdAt;
     private Boolean deleted;
     private OffsetDateTime deletedAt;
 
     public Card(Long id, Long worldId, Long cardTypeId, String cardName,
             String imageUrl, List<String> aliases, List<CardSection> sections,
+            List<CardRelationship> relationships,
             OffsetDateTime createdAt, Boolean deleted, OffsetDateTime deletedAt) {
         this.id = id;
         this.worldId = worldId;
@@ -25,6 +27,7 @@ public class Card {
         this.imageUrl = imageUrl;
         this.aliases = aliases;
         this.sections = sections;
+        this.relationships = relationships;
         this.createdAt = createdAt;
         this.deleted = deleted;
         this.deletedAt = deletedAt;
@@ -65,6 +68,7 @@ public class Card {
     public String getImageUrl() { return imageUrl; }
     public List<String> getAliases() { return aliases; }
     public List<CardSection> getSections() { return sections; }
+    public List<CardRelationship> getRelationships() { return relationships; }
     public OffsetDateTime getCreatedAt() { return createdAt; }
     public Boolean getDeleted() { return deleted; }
     public OffsetDateTime getDeletedAt() { return deletedAt; }

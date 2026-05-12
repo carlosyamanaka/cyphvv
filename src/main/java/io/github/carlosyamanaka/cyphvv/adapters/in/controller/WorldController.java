@@ -7,6 +7,7 @@ import io.github.carlosyamanaka.cyphvv.adapters.in.controller.request.AddCardAli
 import io.github.carlosyamanaka.cyphvv.adapters.in.controller.request.CreateCardRequest;
 import io.github.carlosyamanaka.cyphvv.adapters.in.controller.request.CreateCardTypeRequest;
 import io.github.carlosyamanaka.cyphvv.adapters.in.controller.request.CreateWorldRequest;
+import io.github.carlosyamanaka.cyphvv.adapters.in.controller.request.SaveCardRelationshipsRequest;
 import io.github.carlosyamanaka.cyphvv.adapters.in.controller.request.UpdateCardTypeRequest;
 import io.github.carlosyamanaka.cyphvv.adapters.in.controller.request.UpdateCardNameRequest;
 import io.github.carlosyamanaka.cyphvv.adapters.in.controller.request.SaveCardSectionsRequest;
@@ -15,6 +16,8 @@ import io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardRespo
 import io.github.carlosyamanaka.cyphvv.adapters.in.controller.response.CardTypeResponse;
 import io.github.carlosyamanaka.cyphvv.application.core.domain.World;
 import io.github.carlosyamanaka.cyphvv.application.core.domain.Card;
+import io.github.carlosyamanaka.cyphvv.application.core.domain.CardRelationship;
+import io.github.carlosyamanaka.cyphvv.application.core.domain.CardRelationshipTarget;
 import io.github.carlosyamanaka.cyphvv.application.core.domain.CardSection;
 import io.github.carlosyamanaka.cyphvv.application.core.domain.CardType;
 import io.github.carlosyamanaka.cyphvv.application.ports.in.CreateCardUseCase;
@@ -30,6 +33,7 @@ import io.github.carlosyamanaka.cyphvv.application.ports.in.AddCardAliasUseCase;
 import io.github.carlosyamanaka.cyphvv.application.ports.in.RemoveCardAliasUseCase;
 import io.github.carlosyamanaka.cyphvv.application.ports.in.UpdateCardNameUseCase;
 import io.github.carlosyamanaka.cyphvv.application.ports.in.SaveCardSectionsUseCase;
+import io.github.carlosyamanaka.cyphvv.application.ports.in.SaveCardRelationshipsUseCase;
 import io.github.carlosyamanaka.cyphvv.security.FirebaseUserDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,6 +60,7 @@ public class WorldController {
     private final RemoveCardAliasUseCase removeCardAliasUseCase;
     private final UpdateCardNameUseCase updateCardNameUseCase;
     private final SaveCardSectionsUseCase saveCardSectionsUseCase;
+    private final SaveCardRelationshipsUseCase saveCardRelationshipsUseCase;
     private final WorldControllerMapper worldMapper;
     private final CardControllerMapper cardMapper;
     private final CardTypeControllerMapper cardTypeMapper;
@@ -73,6 +78,7 @@ public class WorldController {
             RemoveCardAliasUseCase removeCardAliasUseCase,
             UpdateCardNameUseCase updateCardNameUseCase,
             SaveCardSectionsUseCase saveCardSectionsUseCase,
+            SaveCardRelationshipsUseCase saveCardRelationshipsUseCase,
             WorldControllerMapper worldMapper,
             CardControllerMapper cardMapper,
             CardTypeControllerMapper cardTypeMapper) {
@@ -89,6 +95,7 @@ public class WorldController {
         this.removeCardAliasUseCase = removeCardAliasUseCase;
         this.updateCardNameUseCase = updateCardNameUseCase;
         this.saveCardSectionsUseCase = saveCardSectionsUseCase;
+        this.saveCardRelationshipsUseCase = saveCardRelationshipsUseCase;
         this.worldMapper = worldMapper;
         this.cardMapper = cardMapper;
         this.cardTypeMapper = cardTypeMapper;
@@ -250,6 +257,31 @@ public class WorldController {
                         .toList();
 
         Card updatedCard = saveCardSectionsUseCase.execute(worldId, cardId, sections);
+        CardResponse response = cardMapper.toResponse(updatedCard);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{worldId}/cards/{cardId}/relationships")
+    public ResponseEntity<CardResponse> saveCardRelationships(
+            @AuthenticationPrincipal FirebaseUserDetails user,
+            @PathVariable Long worldId,
+            @PathVariable Long cardId,
+            @RequestBody SaveCardRelationshipsRequest request) {
+
+        List<CardRelationship> relationships = request.relationships() == null
+                ? Collections.emptyList()
+                : request.relationships().stream()
+                        .map(item -> {
+                            List<CardRelationshipTarget> targets = item.targets() == null
+                                    ? Collections.emptyList()
+                                    : item.targets().stream()
+                                            .map(t -> new CardRelationshipTarget(t.targetCardId()))
+                                            .toList();
+                            return new CardRelationship(null, item.name(), cardId, targets, false);
+                        })
+                        .toList();
+
+        Card updatedCard = saveCardRelationshipsUseCase.execute(worldId, cardId, relationships);
         CardResponse response = cardMapper.toResponse(updatedCard);
         return ResponseEntity.ok(response);
     }

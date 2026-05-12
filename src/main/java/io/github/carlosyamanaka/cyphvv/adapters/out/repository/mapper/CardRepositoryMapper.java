@@ -3,6 +3,7 @@ package io.github.carlosyamanaka.cyphvv.adapters.out.repository.mapper;
 import io.github.carlosyamanaka.cyphvv.adapters.out.repository.entity.CardEntity;
 import io.github.carlosyamanaka.cyphvv.application.core.domain.Card;
 import io.github.carlosyamanaka.cyphvv.application.core.domain.CardSection;
+import io.github.carlosyamanaka.cyphvv.application.core.domain.CardRelationship;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -27,10 +28,14 @@ public class CardRepositoryMapper {
     }
 
     public Card toDomain(CardEntity entity) {
-        return toDomainWithSections(entity, Collections.emptyList());
+        return toDomainWithAllComponents(entity, Collections.emptyList(), Collections.emptyList());
     }
 
     public Card toDomainWithSections(CardEntity entity, List<CardSection> sections) {
+        return toDomainWithAllComponents(entity, sections, Collections.emptyList());
+    }
+
+    public Card toDomainWithAllComponents(CardEntity entity, List<CardSection> sections, List<CardRelationship> relationships) {
         return new Card(
                 entity.getId(),
                 entity.getWorldId(),
@@ -39,6 +44,7 @@ public class CardRepositoryMapper {
                 entity.getImageUrl(),
                 entity.getAliases() == null ? new java.util.ArrayList<>() : new java.util.ArrayList<>(Arrays.asList(entity.getAliases())),
                 sections,
+                relationships,
                 entity.getCreatedAt(),
                 entity.getDeleted(),
                 entity.getDeletedAt());
