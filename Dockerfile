@@ -21,7 +21,7 @@ COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
 
 # Define variáveis de ambiente padrão
-ENV SPRING_PROFILES_ACTIVE=staging
+ENV SPRING_PROFILES_ACTIVE=prod
 
 # Executa o jar da aplicação
 ENTRYPOINT ["java", "-jar", "app.jar"]
