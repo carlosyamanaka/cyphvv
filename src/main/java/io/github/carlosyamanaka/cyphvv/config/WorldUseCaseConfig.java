@@ -77,8 +77,7 @@ public class WorldUseCaseConfig {
 
     @Bean
     public SaveCardRelationshipsUseCase saveCardRelationshipsUseCase(CardRepositoryPort cardRepositoryPort,
-            CardRelationshipRepositoryPort cardRelationshipRepositoryPort,
-            CardSectionRepositoryPort cardSectionRepositoryPort) {
-        return new SaveCardRelationshipsUseCaseImpl(cardRepositoryPort, cardRelationshipRepositoryPort, cardSectionRepositoryPort);
+            CardRelationshipRepositoryPort cardRelationshipRepositoryPort) {
+        return new SaveCardRelationshipsUseCaseImpl(cardRepositoryPort, cardRelationshipRepositoryPort);
     }
 }

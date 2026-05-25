@@ -8,6 +8,7 @@ import io.github.carlosyamanaka.cyphvv.application.core.domain.CardRelationship;
 import io.github.carlosyamanaka.cyphvv.application.ports.out.CardRepositoryPort;
 import io.github.carlosyamanaka.cyphvv.application.ports.out.CardRelationshipRepositoryPort;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class CardRepositoryAdapter implements CardRepositoryPort {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Card> findByWorldId(Long worldId) {
         return cardJpaRepository.findByWorldIdAndNotDeleted(worldId)
                 .stream()
@@ -54,6 +56,7 @@ public class CardRepositoryAdapter implements CardRepositoryPort {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Card findById(Long worldId, Long cardId) {
         return cardJpaRepository.findByWorldIdAndIdAndNotDeleted(worldId, cardId)
                 .map(entity -> {
@@ -69,6 +72,7 @@ public class CardRepositoryAdapter implements CardRepositoryPort {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Card findByIdWithSections(Long worldId, Long cardId, List<CardSection> sections) {
         return cardJpaRepository.findByWorldIdAndIdAndNotDeleted(worldId, cardId)
                 .map(entity -> {

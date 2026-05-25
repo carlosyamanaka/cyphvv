@@ -1,6 +1,7 @@
 package io.github.carlosyamanaka.cyphvv.adapters.out.repository.entity;
 
 import jakarta.persistence.*;
+
 import java.util.List;
 
 @Entity
@@ -19,7 +20,9 @@ public class CardRelationshipEntity {
 
     private Boolean deleted = false;
 
-    @OneToMany(mappedBy = "relationshipId")
+    // Targets são gerenciados manualmente pelo adapter via batch queries
+    // (sem @OneToMany para evitar lazy loading e N+1 implícito)
+    @Transient
     private List<CardRelationshipTargetEntity> targets;
 
     public CardRelationshipEntity() {

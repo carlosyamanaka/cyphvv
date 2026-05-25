@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  # Serviço do Banco de Dados PostgreSQL para ambiente local
+  db:
+    image: postgres:16-alpine
+    container_name: cyphvv-db
+    environment:
+      POSTGRES_DB: cyphvv
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: localpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d cyphvv"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Serviço da Aplicação Spring Boot (cyphvv)
+  app:
+    build: .
+    container_name: cyphvv-app
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=staging
+      # Configuração para se conectar ao container 'db' do docker-compose
+      - STAGING_DB_URL=jdbc:postgresql://db:5432/cyphvv
+      - STAGING_DB_USER=postgres
+      - STAGING_DB_PASSWORD=localpassword
+      # Caso queira rodar em modo produção (mude SPRING_PROFILES_ACTIVE para prod)
+      - PROD_DB_URL=jdbc:postgresql://db:5432/cyphvv
+      - PROD_DB_USER=postgres
+      - PROD_DB_PASSWORD=localpassword
+      # Variável para o Firebase Admin SDK
+      - FIREBASE_CREDENTIALS_PATH=${FIREBASE_CREDENTIALS_PATH:-cyphvv-firebase-adminsdk-fbsvc-12a4f1c677.json}
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
