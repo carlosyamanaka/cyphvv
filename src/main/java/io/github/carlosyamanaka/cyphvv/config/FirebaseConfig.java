@@ -25,9 +25,13 @@ public class FirebaseConfig {
             try {
                 InputStream inputStream;
                 File file = new File(firebaseCredentialsPath);
+                File renderSecretFile = new File("/etc/secrets", file.getName());
                 if (file.exists() && file.isFile()) {
                     inputStream = new FileInputStream(file);
                     System.out.println("ℹ️ Loading Firebase credentials from external file: " + firebaseCredentialsPath);
+                } else if (renderSecretFile.exists() && renderSecretFile.isFile()) {
+                    inputStream = new FileInputStream(renderSecretFile);
+                    System.out.println("ℹ️ Loading Firebase credentials from secret path: " + renderSecretFile.getAbsolutePath());
                 } else {
                     ClassPathResource resource = new ClassPathResource(firebaseCredentialsPath);
                     if (!resource.exists()) {
