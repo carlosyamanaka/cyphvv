@@ -16,7 +16,7 @@ import java.io.InputStream;
 @Configuration
 public class FirebaseConfig {
 
-    @Value("${firebase.credentials.path:firebase-credentials.json}")
+    @Value("${firebase.config.path:firebase-credentials.json}")
     private String firebaseCredentialsPath;
 
     @PostConstruct
