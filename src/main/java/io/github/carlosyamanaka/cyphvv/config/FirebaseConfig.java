@@ -8,7 +8,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 
 import jakarta.annotation.PostConstruct;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 @Configuration
 public class FirebaseConfig {
@@ -20,21 +23,31 @@ public class FirebaseConfig {
     public void initialize() {
         if (FirebaseApp.getApps().isEmpty()) {
             try {
-                ClassPathResource resource = new ClassPathResource(firebaseCredentialsPath);
-
-                if (!resource.exists()) {
-                    System.err.println("⚠️  Firebase credentials file not found: " + firebaseCredentialsPath);
-                    System.err.println(
-                            "⚠️  Firebase authentication will be disabled. Set FIREBASE_CREDENTIALS_PATH environment variable.");
-                    return;
+                InputStream inputStream;
+                File file = new File(firebaseCredentialsPath);
+                if (file.exists() && file.isFile()) {
+                    inputStream = new FileInputStream(file);
+                    System.out.println("ℹ️ Loading Firebase credentials from external file: " + firebaseCredentialsPath);
+                } else {
+                    ClassPathResource resource = new ClassPathResource(firebaseCredentialsPath);
+                    if (!resource.exists()) {
+                        System.err.println("⚠️  Firebase credentials file not found: " + firebaseCredentialsPath);
+                        System.err.println(
+                                "⚠️  Firebase authentication will be disabled. Set FIREBASE_CREDENTIALS_PATH environment variable.");
+                        return;
+                    }
+                    inputStream = resource.getInputStream();
+                    System.out.println("ℹ️ Loading Firebase credentials from classpath: " + firebaseCredentialsPath);
                 }
 
-                FirebaseOptions options = FirebaseOptions.builder()
-                        .setCredentials(GoogleCredentials.fromStream(resource.getInputStream()))
-                        .build();
+                try (InputStream is = inputStream) {
+                    FirebaseOptions options = FirebaseOptions.builder()
+                            .setCredentials(GoogleCredentials.fromStream(is))
+                            .build();
 
-                FirebaseApp.initializeApp(options);
-                System.out.println("✅ Firebase Admin SDK initialized successfully");
+                    FirebaseApp.initializeApp(options);
+                    System.out.println("✅ Firebase Admin SDK initialized successfully");
+                }
             } catch (IOException e) {
                 System.err.println("❌ Error initializing Firebase Admin SDK: " + e.getMessage());
                 System.err.println("⚠️  Firebase authentication will be disabled");
