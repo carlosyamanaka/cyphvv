@@ -25,13 +25,17 @@ public class FirebaseConfig {
             try {
                 InputStream inputStream;
                 File file = new File(firebaseCredentialsPath);
-                File renderSecretFile = new File("/etc/secrets", file.getName());
+                File absoluteSecretFile = new File("/etc/secrets", file.getName());
+                File relativeSecretFile = new File("etc/secrets", file.getName());
                 if (file.exists() && file.isFile()) {
                     inputStream = new FileInputStream(file);
-                    System.out.println("ℹ️ Loading Firebase credentials from external file: " + firebaseCredentialsPath);
-                } else if (renderSecretFile.exists() && renderSecretFile.isFile()) {
-                    inputStream = new FileInputStream(renderSecretFile);
-                    System.out.println("ℹ️ Loading Firebase credentials from secret path: " + renderSecretFile.getAbsolutePath());
+                    System.out.println("ℹ️ Loading Firebase credentials from external file: " + file.getAbsolutePath());
+                } else if (absoluteSecretFile.exists() && absoluteSecretFile.isFile()) {
+                    inputStream = new FileInputStream(absoluteSecretFile);
+                    System.out.println("ℹ️ Loading Firebase credentials from absolute secret path: " + absoluteSecretFile.getAbsolutePath());
+                } else if (relativeSecretFile.exists() && relativeSecretFile.isFile()) {
+                    inputStream = new FileInputStream(relativeSecretFile);
+                    System.out.println("ℹ️ Loading Firebase credentials from relative secret path: " + relativeSecretFile.getAbsolutePath());
                 } else {
                     ClassPathResource resource = new ClassPathResource(firebaseCredentialsPath);
                     if (!resource.exists()) {
