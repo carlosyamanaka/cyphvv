@@ -10,4 +10,5 @@ public interface CardRepositoryPort {
     List<Card> findByWorldId(Long worldId);
     Card findById(Long worldId, Long cardId);
     Card findByIdWithSections(Long worldId, Long cardId, List<CardSection> sections);
+    void softDeleteByWorldId(Long worldId);
 }

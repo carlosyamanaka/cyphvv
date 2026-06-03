@@ -54,6 +54,12 @@ class WorldControllerTest {
         private DeleteCardTypeUseCase deleteCardTypeUseCase;
 
         @Mock
+        private DeleteCardUseCase deleteCardUseCase;
+
+        @Mock
+        private DeleteWorldUseCase deleteWorldUseCase;
+
+        @Mock
         private ListWorldsUseCase listWorldsUseCase;
 
         @Mock
@@ -93,7 +99,7 @@ class WorldControllerTest {
                 controller = new WorldController(
                                 createWorldUseCase, createCardUseCase, createCardTypeUseCase,
                                 listCardTypesByWorldUseCase, getCardTypeByIdUseCase, updateCardTypeUseCase,
-                                deleteCardTypeUseCase, listWorldsUseCase, listCardsByWorldUseCase,
+                                deleteCardTypeUseCase, deleteCardUseCase, deleteWorldUseCase, listWorldsUseCase, listCardsByWorldUseCase,
                                 addCardAliasUseCase, removeCardAliasUseCase,
                                 updateCardNameUseCase, saveCardSectionsUseCase,
                                 saveCardRelationshipsUseCase,
@@ -371,5 +377,38 @@ class WorldControllerTest {
                 assertNotNull(result);
                 assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
                 verify(deleteCardTypeUseCase, times(1)).execute(worldId, cardTypeId);
+        }
+
+        @Test
+        @DisplayName("Should delete card successfully")
+        void testDeleteCard_Success() {
+                // Arrange
+                Long worldId = 1L;
+                Long cardId = 2L;
+                doNothing().when(deleteCardUseCase).execute(worldId, cardId);
+
+                // Act
+                ResponseEntity<Void> result = controller.deleteCard(mockUser, worldId, cardId);
+
+                // Assert
+                assertNotNull(result);
+                assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
+                verify(deleteCardUseCase, times(1)).execute(worldId, cardId);
+        }
+
+        @Test
+        @DisplayName("Should delete world successfully")
+        void testDeleteWorld_Success() {
+                // Arrange
+                Long worldId = 1L;
+                doNothing().when(deleteWorldUseCase).execute(USER_ID, worldId);
+
+                // Act
+                ResponseEntity<Void> result = controller.deleteWorld(mockUser, worldId);
+
+                // Assert
+                assertNotNull(result);
+                assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
+                verify(deleteWorldUseCase, times(1)).execute(USER_ID, worldId);
         }
 }

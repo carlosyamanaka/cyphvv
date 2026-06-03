@@ -36,6 +36,7 @@ public class Card {
     public void delete() {
         this.deleted = true;
         this.deletedAt = OffsetDateTime.now();
+        this.aliases = java.util.Collections.emptyList();
     }
 
     public void addAlias(String alias) {

@@ -23,6 +23,8 @@ import io.github.carlosyamanaka.cyphvv.application.core.domain.CardType;
 import io.github.carlosyamanaka.cyphvv.application.ports.in.CreateCardUseCase;
 import io.github.carlosyamanaka.cyphvv.application.ports.in.CreateCardTypeUseCase;
 import io.github.carlosyamanaka.cyphvv.application.ports.in.CreateWorldUseCase;
+import io.github.carlosyamanaka.cyphvv.application.ports.in.DeleteCardUseCase;
+import io.github.carlosyamanaka.cyphvv.application.ports.in.DeleteWorldUseCase;
 import io.github.carlosyamanaka.cyphvv.application.ports.in.DeleteCardTypeUseCase;
 import io.github.carlosyamanaka.cyphvv.application.ports.in.GetCardTypeByIdUseCase;
 import io.github.carlosyamanaka.cyphvv.application.ports.in.ListCardTypesByWorldUseCase;
@@ -54,6 +56,8 @@ public class WorldController {
     private final GetCardTypeByIdUseCase getCardTypeByIdUseCase;
     private final UpdateCardTypeUseCase updateCardTypeUseCase;
     private final DeleteCardTypeUseCase deleteCardTypeUseCase;
+    private final DeleteCardUseCase deleteCardUseCase;
+    private final DeleteWorldUseCase deleteWorldUseCase;
     private final ListWorldsUseCase listWorldsUseCase;
     private final ListCardsByWorldUseCase listCardsByWorldUseCase;
     private final AddCardAliasUseCase addCardAliasUseCase;
@@ -72,6 +76,8 @@ public class WorldController {
             GetCardTypeByIdUseCase getCardTypeByIdUseCase,
             UpdateCardTypeUseCase updateCardTypeUseCase,
             DeleteCardTypeUseCase deleteCardTypeUseCase,
+            DeleteCardUseCase deleteCardUseCase,
+            DeleteWorldUseCase deleteWorldUseCase,
             ListWorldsUseCase listWorldsUseCase,
             ListCardsByWorldUseCase listCardsByWorldUseCase,
             AddCardAliasUseCase addCardAliasUseCase,
@@ -89,6 +95,8 @@ public class WorldController {
         this.getCardTypeByIdUseCase = getCardTypeByIdUseCase;
         this.updateCardTypeUseCase = updateCardTypeUseCase;
         this.deleteCardTypeUseCase = deleteCardTypeUseCase;
+        this.deleteCardUseCase = deleteCardUseCase;
+        this.deleteWorldUseCase = deleteWorldUseCase;
         this.listWorldsUseCase = listWorldsUseCase;
         this.listCardsByWorldUseCase = listCardsByWorldUseCase;
         this.addCardAliasUseCase = addCardAliasUseCase;
@@ -122,6 +130,16 @@ public class WorldController {
         World createdWorld = createWorldUseCase.execute(userId, request.worldName());
         WorldResponse response = worldMapper.toResponse(createdWorld);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @DeleteMapping("/{worldId}")
+    public ResponseEntity<Void> deleteWorld(
+            @AuthenticationPrincipal FirebaseUserDetails user,
+            @PathVariable Long worldId) {
+
+        String userId = user.getUid();
+        deleteWorldUseCase.execute(userId, worldId);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{worldId}/cards")
@@ -204,6 +222,16 @@ public class WorldController {
             @PathVariable Long cardTypeId) {
 
         deleteCardTypeUseCase.execute(worldId, cardTypeId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{worldId}/cards/{cardId}")
+    public ResponseEntity<Void> deleteCard(
+            @AuthenticationPrincipal FirebaseUserDetails user,
+            @PathVariable Long worldId,
+            @PathVariable Long cardId) {
+
+        deleteCardUseCase.execute(worldId, cardId);
         return ResponseEntity.noContent().build();
     }
 

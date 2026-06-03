@@ -7,4 +7,5 @@ import java.util.List;
 public interface WorldRepositoryPort {
     World save(World world);
     List<World> findByUserId(String userId);
+    World findById(Long id);
 }

@@ -45,6 +45,15 @@ public class WorldUseCaseConfig {
     }
 
     @Bean
+    public DeleteWorldUseCase deleteWorldUseCase(WorldRepositoryPort worldRepositoryPort,
+            CardRepositoryPort cardRepositoryPort,
+            CardTypeRepositoryPort cardTypeRepositoryPort,
+            CardSectionRepositoryPort cardSectionRepositoryPort,
+            CardRelationshipRepositoryPort cardRelationshipRepositoryPort) {
+        return new DeleteWorldUseCaseImpl(worldRepositoryPort, cardRepositoryPort, cardTypeRepositoryPort, cardSectionRepositoryPort, cardRelationshipRepositoryPort);
+    }
+
+    @Bean
     public ListWorldsUseCase listWorldsUseCase(WorldRepositoryPort worldRepositoryPort) {
         return new ListWorldsUseCaseImpl(worldRepositoryPort);
     }
@@ -79,5 +88,12 @@ public class WorldUseCaseConfig {
     public SaveCardRelationshipsUseCase saveCardRelationshipsUseCase(CardRepositoryPort cardRepositoryPort,
             CardRelationshipRepositoryPort cardRelationshipRepositoryPort) {
         return new SaveCardRelationshipsUseCaseImpl(cardRepositoryPort, cardRelationshipRepositoryPort);
+    }
+
+    @Bean
+    public DeleteCardUseCase deleteCardUseCase(CardRepositoryPort cardRepositoryPort,
+            CardSectionRepositoryPort cardSectionRepositoryPort,
+            CardRelationshipRepositoryPort cardRelationshipRepositoryPort) {
+        return new DeleteCardUseCaseImpl(cardRepositoryPort, cardSectionRepositoryPort, cardRelationshipRepositoryPort);
     }
 }

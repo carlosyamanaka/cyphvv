@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Serviço da Aplicação Spring Boot (cyphvv)
   app:
@@ -12,3 +10,5 @@ services:
       - .env
     environment:
       - SPRING_PROFILES_ACTIVE=staging
+    volumes:
+      - ./etc/secrets:/etc/secrets

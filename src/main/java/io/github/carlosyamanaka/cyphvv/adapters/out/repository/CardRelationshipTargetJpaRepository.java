@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,4 +32,14 @@ public interface CardRelationshipTargetJpaRepository extends JpaRepository<CardR
     void softDeleteByRelationshipIds(@Param("relationshipIds") List<Long> relationshipIds);
 
     void deleteByRelationshipId(Long relationshipId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE CardRelationshipTargetEntity t SET t.deleted = true WHERE t.relationshipId IN (SELECT r.id FROM CardRelationshipEntity r JOIN CardEntity c ON r.originCardId = c.id WHERE c.worldId = :worldId) AND t.deleted = false")
+    void softDeleteTargetsByWorldId(@Param("worldId") Long worldId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE CardRelationshipTargetEntity t SET t.deleted = true WHERE t.targetCardId IN (SELECT c.id FROM CardEntity c WHERE c.worldId = :worldId) AND t.deleted = false")
+    void softDeleteExternalTargetsByWorldId(@Param("worldId") Long worldId);
 }

@@ -38,4 +38,11 @@ public class WorldRepositoryAdapter implements WorldRepositoryPort {
                 .map(mapper::toDomain)
                 .toList();
     }
+
+    @Override
+    public World findById(Long id) {
+        return worldJpaRepository.findByIdAndNotDeleted(id)
+                .map(mapper::toDomain)
+                .orElse(null);
+    }
 }

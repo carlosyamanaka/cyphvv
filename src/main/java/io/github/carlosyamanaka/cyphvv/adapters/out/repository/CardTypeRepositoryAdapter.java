@@ -41,4 +41,9 @@ public class CardTypeRepositoryAdapter implements CardTypeRepositoryPort {
 
         return mapper.toDomain(entity);
     }
+
+    @Override
+    public void softDeleteByWorldId(Long worldId) {
+        cardTypeJpaRepository.softDeleteByWorldId(worldId, java.time.OffsetDateTime.now());
+    }
 }

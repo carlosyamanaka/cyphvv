@@ -20,4 +20,9 @@ public interface CardSectionJpaRepository extends JpaRepository<CardSectionEntit
     @Transactional
     @Query("UPDATE CardSectionEntity s SET s.deleted = true WHERE s.cardId = :cardId AND s.deleted = false")
     void softDeleteByCardId(@Param("cardId") Long cardId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE CardSectionEntity s SET s.deleted = true WHERE s.cardId IN (SELECT c.id FROM CardEntity c WHERE c.worldId = :worldId) AND s.deleted = false")
+    void softDeleteByWorldId(@Param("worldId") Long worldId);
 }

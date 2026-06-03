@@ -36,4 +36,9 @@ public class CardSectionRepositoryAdapter implements CardSectionRepositoryPort {
     public void softDeleteByCardId(Long cardId) {
         cardSectionJpaRepository.softDeleteByCardId(cardId);
     }
+
+    @Override
+    public void softDeleteByWorldId(Long worldId) {
+        cardSectionJpaRepository.softDeleteByWorldId(worldId);
+    }
 }

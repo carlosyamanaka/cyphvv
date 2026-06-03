@@ -114,4 +114,12 @@ public class CardRelationshipRepositoryAdapter implements CardRelationshipReposi
                 })
                 .toList();
     }
+
+    @Override
+    @Transactional
+    public void softDeleteByWorldId(Long worldId) {
+        targetJpaRepository.softDeleteTargetsByWorldId(worldId);
+        targetJpaRepository.softDeleteExternalTargetsByWorldId(worldId);
+        relationshipJpaRepository.softDeleteByWorldId(worldId);
+    }
 }

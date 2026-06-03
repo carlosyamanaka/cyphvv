@@ -8,4 +8,5 @@ public interface CardSectionRepositoryPort {
     List<CardSection> findByCardId(Long cardId);
     CardSection save(CardSection section);
     void softDeleteByCardId(Long cardId);
+    void softDeleteByWorldId(Long worldId);
 }
